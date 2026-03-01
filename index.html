@@ -261,6 +261,10 @@
         .refs ul{list-style:none;padding:0}
         .refs ul li{font-size:12px;color:var(--gr);padding:3px 0;padding-left:16px;position:relative}
         .refs ul li::before{content:'•';position:absolute;left:0;color:var(--p)}
+        /* enlaces de referencias: icono en lugar de mostrar URL */
+        .refs ul li a{color:var(--p);text-decoration:none;position:relative}
+        .refs ul li a::before{content:'🔗';font-size:12px;margin-left:6px}
+        .refs ul li a:hover::before{text-decoration:underline}
 
         /* ===== IMPORTANT BOX ===== */
         .imp-box{background:linear-gradient(135deg,rgba(37,99,235,0.08),rgba(6,182,212,0.08));border:1px solid rgba(37,99,235,0.15);border-radius:16px;padding:24px 28px;margin:16px 0}
@@ -498,7 +502,7 @@
         <div class="s-header fu">
             <div class="s-tag s-tag-white">Módulo 1 · Fundamentos</div>
             <h2 class="s-title s-title-light">¿Qué es el Servicio <span class="hl">Cara a Cara</span>?</h2>
-            <p class="s-desc s-desc-light">La interacción directa entre el prestador de servicio y el cliente sigue siendo el canal más poderoso para crear vínculos emocionales y de confianza.</p>
+            <p class="s-desc s-desc-light">La interacción directa entre el prestador de servicio y el cliente es uno de los canales más efectivos para construir confianza, detectar necesidades y fortalecer la relación.</p>
         </div>
 
         <div class="side-layout">
@@ -552,8 +556,8 @@
     <div class="slide-inner">
         <div class="s-header fu">
             <div class="s-tag s-tag-blue">Módulo 1 · Contexto</div>
-            <h2 class="s-title s-title-dark">¿Por Qué Sigue Siendo <span class="hl3">Insustituible</span>?</h2>
-            <p class="s-desc">En una era digital, la atención presencial no solo sobrevive: se vuelve un diferenciador competitivo más valioso que nunca.</p>
+            <h2 class="s-title s-title-dark">¿Por Qué Sigue Siendo <span class="hl3">Estratégico</span>?</h2>
+            <p class="s-desc">En una era digital, la atención presencial complementa los canales virtuales y puede convertirse en un diferenciador competitivo medible.</p>
         </div>
 
         <div class="stats-grid fu d1">
@@ -1150,7 +1154,7 @@
         <div class="s-header fu">
             <div class="s-tag s-tag-white">Módulo 5 · Herramientas</div>
             <h2 class="s-title s-title-light">Herramientas CRM <span class="hl">Líderes</span> del Mercado</h2>
-            <p class="s-desc s-desc-light">Comparativa de las principales plataformas según tamaño de empresa, presupuesto y necesidades.</p>
+            <p class="s-desc s-desc-light">Comparativa práctica según tres criterios de decisión: facilidad de adopción, costo total y escalabilidad.</p>
         </div>
 
         <div class="grid g3 fu d1">
@@ -1161,11 +1165,10 @@
                     <span class="badge b-blue">Empresarial</span>
                 </div>
                 <ul class="c-list">
-                    <li>Solución más completa del mercado</li>
-                    <li>IA integrada (Einstein AI) para predicciones</li>
-                    <li>+3,000 integraciones disponibles</li>
-                    <li>Ideal para empresas medianas-grandes</li>
-                    <li>Curva de aprendizaje alta</li>
+                    <li>Plataforma robusta para operaciones comerciales complejas</li>
+                    <li>IA integrada (Einstein) y amplio ecosistema de integraciones</li>
+                    <li>Recomendada para empresas medianas y grandes</li>
+                    <li>Implementación y capacitación más exigentes</li>
                 </ul>
                 <p class="c-text" style="margin-top:10px"><strong>Precio:</strong> desde $25 USD/usuario/mes</p>
                 <p class="c-text"><strong>Cuota mercado:</strong> 23.8% global (IDC, 2024)</p>
@@ -1177,11 +1180,10 @@
                     <span class="badge b-green">PYMES</span>
                 </div>
                 <ul class="c-list">
-                    <li>CRM gratuito con funciones robustas</li>
-                    <li>Interfaz intuitiva y fácil adopción</li>
-                    <li>Marketing + Ventas + Servicio integrado</li>
-                    <li>Ideal para PYMES y startups</li>
-                    <li>Excelente academia de capacitación</li>
+                    <li>Entrada simple con plan gratuito y adopción rápida</li>
+                    <li>Marketing, ventas y servicio en una sola interfaz</li>
+                    <li>Recomendada para PYMES y equipos en crecimiento</li>
+                    <li>El costo aumenta al activar funciones avanzadas</li>
                 </ul>
                 <p class="c-text" style="margin-top:10px"><strong>Precio:</strong> CRM gratis / Premium desde $45/mes</p>
                 <p class="c-text"><strong>Usuarios:</strong> +194,000 empresas (HubSpot, 2024)</p>
@@ -1193,11 +1195,10 @@
                     <span class="badge b-orange">Económico</span>
                 </div>
                 <ul class="c-list">
-                    <li>Mejor relación costo-beneficio</li>
-                    <li>Suite completa: CRM + ERP + Oficina</li>
-                    <li>IA integrada (Zia) para automatización</li>
-                    <li>Ideal para Latinoamérica (precio accesible)</li>
-                    <li>Personalización avanzada sin código</li>
+                    <li>Buena relación costo-beneficio para equipos pequeños y medianos</li>
+                    <li>Suite amplia (CRM + apps de negocio) con alta personalización</li>
+                    <li>IA Zia para automatizaciones y productividad comercial</li>
+                    <li>Requiere diseño de procesos para aprovechar todo su potencial</li>
                 </ul>
                 <p class="c-text" style="margin-top:10px"><strong>Precio:</strong> desde $14 USD/usuario/mes</p>
                 <p class="c-text"><strong>Usuarios:</strong> +250,000 empresas (Zoho, 2024)</p>
@@ -1217,7 +1218,7 @@
         <div class="s-header fu">
             <div class="s-tag s-tag-blue">Módulo 5 · Componentes</div>
             <h2 class="s-title s-title-dark">Los <span class="hl">10 Componentes</span> Clave de un CRM</h2>
-            <p class="s-desc">Cada componente aporta una pieza esencial para la gestión integral de la relación con el cliente.</p>
+            <p class="s-desc">Para explicarlo mejor: agrupa estos componentes en tres capas: operación comercial, servicio y analítica de decisiones.</p>
         </div>
 
         <div class="grid g2 fu d1" style="grid-template-columns:1fr 1fr;">
@@ -1262,7 +1263,7 @@
             </div>
         </div>
 
-        <div class="note fu d5"><span class="note-icon">📊</span><span>Datos de impacto según <strong>Nucleus Research (2024)</strong>: "CRM delivers an average of $8.71 for every dollar spent." Estos resultados se logran con implementación correcta y adopción del equipo superior al 70%.</span></div>
+        <div class="note fu d5"><span class="note-icon">📊</span><span>Referencia: <strong>Nucleus Research (2024), CRM Technology Value Matrix & ROI Study</strong>. El estudio reporta un ROI promedio de <strong>$8.71 por cada $1 invertido</strong>; los resultados varían según adopción del equipo, calidad de datos y madurez del proceso.</span></div>
     </div>
 </div>
 
@@ -1365,16 +1366,16 @@
             <div class="refs fu d4">
                 <h4>📚 Referencias Bibliográficas</h4>
                 <ul>
-                    <li>Kotler, P. & Keller, K. (2023). <em>Marketing Management</em>, 16th Ed. Pearson</li>
-                    <li>Harvard Business Review (2023). <em>The Science of Customer Experience</em></li>
-                    <li>Gallo, C. (2023). <em>The Communication Skills That Make or Break Leaders</em></li>
-                    <li>Gartner (2025). <em>Customer Service & Support Technology Trends</em></li>
-                    <li>Zendesk (2025). <em>Customer Experience Trends Report</em></li>
-                    <li>Nucleus Research (2024). <em>CRM Technology Value Matrix & ROI Study</em></li>
-                    <li>PwC (2023). <em>Future of Customer Experience Survey</em></li>
-                    <li>Bain & Company (2024). <em>The Economics of Loyalty</em></li>
-                    <li>McKinsey & Company (2024). <em>The Value of Customer Experience</em></li>
-                    <li>Accenture (2024). <em>Global Consumer Pulse Research</em></li>
+                    <li>Kotler, P. & Keller, K. (16th ed.). <em>Marketing Management</em>, Pearson. <a href="https://www.pearson.com/en-us/subject-catalog/p/marketing-management/P200000005952/9780135887158" target="_blank" rel="noopener noreferrer" aria-label="https://www.pearson.com/en-us/subject-catalog/p/marketing-management/P200000005952/9780135887158" title="https://www.pearson.com/en-us/subject-catalog/p/marketing-management/P200000005952/9780135887158"></a></li>
+                    <li>Harvard Business Review (2023). <em>Customer Experience Is Everyone's Responsibility</em>. <a href="https://store.hbr.org/product/customer-experience-is-everyone-s-responsibility/H07KM6" target="_blank" rel="noopener noreferrer" aria-label="https://store.hbr.org/product/customer-experience-is-everyone-s-responsibility/H07KM6" title="https://store.hbr.org/product/customer-experience-is-everyone-s-responsibility/H07KM6"></a></li>
+                    <li>Gallo, C. (2022). <em>How Great Leaders Communicate</em>, Harvard Business Review. <a href="https://hbr.org/2022/11/how-great-leaders-communicate" target="_blank" rel="noopener noreferrer" aria-label="https://hbr.org/2022/11/how-great-leaders-communicate" title="https://hbr.org/2022/11/how-great-leaders-communicate"></a></li>
+                    <li>Gartner (2025). <em>2025 Technology Trends in Customer Service and Support</em>. <a href="https://www.gartner.com/en/documents/6647234" target="_blank" rel="noopener noreferrer" aria-label="https://www.gartner.com/en/documents/6647234" title="https://www.gartner.com/en/documents/6647234"></a> (requiere suscripción)</li>
+                    <li>Zendesk (2025). <em>CX Trends 2025</em>. <a href="https://cxtrends.zendesk.com/es/reports/cx-trends-2025" target="_blank" rel="noopener noreferrer" aria-label="https://cxtrends.zendesk.com/es/reports/cx-trends-2025" title="https://cxtrends.zendesk.com/es/reports/cx-trends-2025"></a></li>
+                    <li>Nucleus Research (2024-2026). <em>Technology Value Matrix (metodología y series)</em>. <a href="https://nucleusresearch.com/valuematrix/" target="_blank" rel="noopener noreferrer" aria-label="https://nucleusresearch.com/valuematrix/" title="https://nucleusresearch.com/valuematrix/"></a></li>
+                    <li>PwC (2025). <em>Customer Experience Survey</em>. <a href="https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-customer-experience-survey.html" target="_blank" rel="noopener noreferrer" aria-label="https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-customer-experience-survey.html" title="https://www.pwc.com/us/en/services/consulting/business-transformation/library/2025-customer-experience-survey.html"></a></li>
+                    <li>Bain & Company. <em>The Economics of Loyalty</em>. <a href="https://www.bain.com/insights/the-economics-of-loyalty/" target="_blank" rel="noopener noreferrer" aria-label="https://www.bain.com/insights/the-economics-of-loyalty/" title="https://www.bain.com/insights/the-economics-of-loyalty/"></a></li>
+                    <li>McKinsey & Company. <em>Linking the Customer Experience to Value</em>. <a href="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/linking-the-customer-experience-to-value" target="_blank" rel="noopener noreferrer" aria-label="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/linking-the-customer-experience-to-value" title="https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/linking-the-customer-experience-to-value"></a></li>
+                    <li>Accenture (2025). <em>Me, my brand and AI: The new world of consumer engagement (Consumer Pulse)</em>. <a href="https://www.accenture.com/jp-ja/insights/consulting/me-my-brand-ai-new-world-consumer-engagement" target="_blank" rel="noopener noreferrer" aria-label="https://www.accenture.com/jp-ja/insights/consulting/me-my-brand-ai-new-world-consumer-engagement" title="https://www.accenture.com/jp-ja/insights/consulting/me-my-brand-ai-new-world-consumer-engagement"></a></li>
                 </ul>
             </div>
         </div>
@@ -1529,8 +1530,5 @@ up();
 
 </body>
 </html>
-
-
-
 
 
