@@ -17,6 +17,8 @@ Presentación web en una sola página (`index.html`) sobre estrategias de atenci
    - Toque (swipe) en dispositivos móviles
 3. El scroll vertical se usa para desplazarte dentro de las diapositivas largas (no cambia de panel con la rueda del mouse).
 
+> 🔒 **Protección de URLs:** La diapositiva de cierre no muestra las direcciones completas; cada referencia aparece como un icono clicable. Si necesitas modificar este comportamiento, edita el CSS dentro de la sección `/* ===== CLOSING ===== */` en `index.html`.
+
 ## Presentadores
 
 - Yudy Vanessa Martinez Leguizamon
@@ -32,6 +34,7 @@ Presentación web en una sola página (`index.html`) sobre estrategias de atenci
 - Cambiar subtítulo: busca `cover-sub`.
 - Cambiar nombres de presentadores: busca `cover-presenters`.
 - Ajustar cantidad total de paneles: se calcula automáticamente según los elementos `.slide`.
+- Modificar comportamiento de enlaces de cierre: revisa estilos bajo la sección `/* ===== CLOSING ===== */` para cambiar icono o mostrar texto.
 
 ## Requisitos
 
