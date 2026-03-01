@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Presentación sobre estrategias de atención personalizada cara a cara, métricas de servicio y CRM aplicado.">
     <title>Estrategias de Atención Personalizada Cara a Cara</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -296,6 +297,7 @@
         .dot-btn{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;transition:all .3s ease;padding:0}
         .dot-btn.active{background:var(--p);width:22px;border-radius:4px}
         .dot-btn:hover{background:rgba(255,255,255,0.3)}
+        .nav-btn:focus-visible,.dot-btn:focus-visible{outline:2px solid var(--s);outline-offset:2px}
         .progress{position:fixed;top:0;left:0;height:3px;background:var(--gd1);z-index:1001;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(37,99,235,0.4)}
         .kbd-hint{position:fixed;top:16px;right:16px;background:rgba(15,23,42,0.7);backdrop-filter:blur(10px);padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);color:var(--gr2);font-size:10px;z-index:1000;opacity:.5;transition:opacity .3s}
         .kbd-hint:hover{opacity:1}
@@ -328,6 +330,11 @@
             .cover-tags{flex-direction:column;align-items:center}
         }
         @media(max-width:480px){.stats-grid{grid-template-columns:1fr}}
+        @media (prefers-reduced-motion: reduce){
+            html{scroll-behavior:auto}
+            *,*::before,*::after{animation:none !important;transition:none !important}
+            .slide,.slide.active,.slide.exit,.fu,.slide.active .fu{transform:none !important}
+        }
 
         /* ===== HEARTBEAT ===== */
         .heartbeat{animation:hb 1.4s infinite}
@@ -381,11 +388,11 @@
 </head>
 <body>
 
-<div id="particles"></div>
+<div id="particles" aria-hidden="true"></div>
 <div class="progress" id="prog"></div>
 <div class="kbd-hint">Usa <kbd>←</kbd> <kbd>→</kbd> o <kbd>Espacio</kbd></div>
 
-<div class="slides-wrap" id="sw">
+<main class="slides-wrap" id="sw" role="main" aria-label="Presentación de estrategias de atención personalizada">
 
 <!-- ===================== SLIDE 1: PORTADA ===================== -->
 <div class="slide bg-dark active" data-slide="1">
@@ -1187,7 +1194,7 @@
             <p class="s-desc">Cada componente aporta una pieza esencial para la gestión integral de la relación con el cliente.</p>
         </div>
 
-        <div class="grid g2" style="grid-template-columns:1fr 1fr;" class="fu d1">
+        <div class="grid g2 fu d1" style="grid-template-columns:1fr 1fr;">
             <table class="s-table fu d1">
                 <thead><tr><th>#</th><th>Componente</th><th>Función</th></tr></thead>
                 <tbody>
@@ -1348,31 +1355,56 @@
     </div>
 </div>
 
-</div>
+</main>
 
 <!-- ===== NAVIGATION ===== -->
-<div class="nav">
-    <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>←</button>
+<div class="nav" role="navigation" aria-label="Navegación de diapositivas">
+    <button class="nav-btn" id="prevBtn" type="button" aria-label="Diapositiva anterior" disabled>←</button>
     <div class="dots" id="dots"></div>
-    <div class="counter"><span id="cur">1</span> <span>/ <span id="tot">16</span></span></div>
-    <button class="nav-btn" id="nextBtn" onclick="go(1)">→</button>
+    <div class="counter" aria-live="polite"><span id="cur">1</span> <span>/ <span id="tot">16</span></span></div>
+    <button class="nav-btn" id="nextBtn" type="button" aria-label="Siguiente diapositiva">→</button>
 </div>
 
 <script>
 let c=0;const s=document.querySelectorAll('.slide'),t=s.length,pb=document.getElementById('prog'),dc=document.getElementById('dots');
-for(let i=0;i<t;i++){const d=document.createElement('button');d.className='dot-btn'+(i===0?' active':'');d.onclick=()=>gt(i);dc.appendChild(d)}
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+for(let i=0;i<t;i++){
+    const d=document.createElement('button');
+    d.type='button';
+    d.className='dot-btn'+(i===0?' active':'');
+    d.setAttribute('aria-label','Ir a diapositiva ' + (i+1));
+    d.setAttribute('aria-current',i===0?'true':'false');
+    d.addEventListener('click',()=>gt(i));
+    dc.appendChild(d);
+}
+prevBtn.addEventListener('click',()=>go(-1));
+nextBtn.addEventListener('click',()=>go(1));
 
 // Particles
 const pc=document.getElementById('particles');
 for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const sz=Math.random()*4+2;p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s;background:${['#2563eb','#06b6d4','#10b981','#f59e0b','#8b5cf6'][Math.floor(Math.random()*5)]}`;pc.appendChild(p)}
 
 function up(){
-    s.forEach((sl,i)=>{sl.classList.remove('active','exit');if(i===c)sl.classList.add('active');else if(i<c)sl.classList.add('exit')});
+    s.forEach((sl,i)=>{
+        sl.classList.remove('active','exit');
+        if(i===c){
+            sl.classList.add('active');
+            sl.removeAttribute('aria-hidden');
+        }else{
+            sl.setAttribute('aria-hidden','true');
+            if(i<c)sl.classList.add('exit');
+        }
+    });
     document.getElementById('cur').textContent=c+1;
     pb.style.width=((c+1)/t*100)+'%';
-    document.querySelectorAll('.dot-btn').forEach((d,i)=>d.classList.toggle('active',i===c));
-    document.getElementById('prevBtn').disabled=c===0;
-    document.getElementById('nextBtn').disabled=c===t-1;
+    document.querySelectorAll('.dot-btn').forEach((d,i)=>{
+        const isActive=i===c;
+        d.classList.toggle('active',isActive);
+        d.setAttribute('aria-current',isActive?'true':'false');
+    });
+    prevBtn.disabled=c===0;
+    nextBtn.disabled=c===t-1;
 }
 function go(d){const n=c+d;if(n>=0&&n<t){c=n;up()}}
 function gt(i){c=i;up()}
@@ -1391,3 +1423,4 @@ document.getElementById('tot').textContent=t;up();
 
 </body>
 </html>
+
