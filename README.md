@@ -16,11 +16,16 @@ Presentación web en una sola página (`index.html`) sobre estrategias de atenci
    - Teclado: `ArrowLeft`, `ArrowRight`, `Espacio`, `Home`, `End`
    - Toque (swipe) en dispositivos móviles
 3. El scroll vertical se usa para desplazarte dentro de las diapositivas largas (no cambia de panel con la rueda del mouse).
-4. **Exportar**: las opciones de exportación están ocultas y sólo accesibles para el autor mediante una contraseña.
-   - Presiona `Ctrl+Shift+E` y escribe la contraseña correcta para mostrar los botones.
+4. **Exportar**: las opciones de exportación están ocultas y sólo accesibles para el autor mediante una contraseña. Para mayor seguridad:
+   - la clave nunca se guarda en texto claro; se compara su SHA‑256 con un hash almacenado en el script.
+   - tras introducirla (combinación `Ctrl+Shift+E`), el estado se guarda en `sessionStorage` y las opciones permanecen visibles hasta que se cierra el navegador.
    - 🖨️ guarda la presentación como PDF vía la impresión del navegador.
-   - 📄 genera y descarga un archivo PowerPoint (`.pptx`) con cada slide convertido en imagen.
-   (La contraseña actual está codificada en el script; cámbiala si es necesario.)
+   - 📄 genera un archivo PowerPoint (`.pptx`) que ahora procesa **todas las diapositivas** y vuelve a la slide original al terminar. Si el PPTX no funciona bien, revisa la consola para posibles errores; el script intentará cargar dinámicamente `html2canvas` si no está disponible.
+   - 🖼️ descarga una **imagen PNG de la página completa** (body) con un solo clic. Este proceso también depende de `html2canvas`; si no hay conexión a CDN el botón mostrará un error en consola.
+   
+> ⚠️ **Sin red**: el repositorio ya incluye `html2canvas.min.js` en la raíz, así que las exportaciones funcionan sin conexión. Si actualizas la versión o quieres usar otra, reemplaza ese archivo. En caso de que lo borres, el script intentará recuperar la librería desde el CDN.
+
+   (Cambia el hash o la clave dentro de la sección de scripts según prefieras.)
 
 > 🔒 **Protección de URLs:** La diapositiva de cierre no muestra las direcciones completas; cada referencia aparece como un icono clicable. Si necesitas modificar este comportamiento, edita el CSS dentro de la sección `/* ===== CLOSING ===== */` en `index.html`.
 

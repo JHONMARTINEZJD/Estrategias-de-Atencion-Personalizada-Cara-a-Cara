@@ -309,6 +309,8 @@
         /* export buttons initially ocultos; se muestran tras autenticación */
         .export-btn{display:none}
         .export-btn.visible{display:flex}
+        /* alexport-img, igual estilo que export-btn */
+
 
         .progress{position:fixed;top:0;left:0;height:3px;background:var(--gd1);z-index:1001;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(37,99,235,0.4)}
         .kbd-hint{position:fixed;top:16px;right:16px;background:rgba(15,23,42,0.7);backdrop-filter:blur(10px);padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);color:var(--gr2);font-size:10px;z-index:1000;opacity:.5;transition:opacity .3s}
@@ -1398,6 +1400,7 @@
     <div class="dots" id="dots"></div>
     <button class="nav-btn export-btn" id="exportPdfBtn" type="button" aria-label="Exportar a PDF" hidden>🖨️</button>
     <button class="nav-btn export-btn" id="exportPptBtn" type="button" aria-label="Descargar PowerPoint" hidden>📄</button>
+    <button class="nav-btn export-btn" id="exportImgBtn" type="button" aria-label="Descargar imagen de toda la página" hidden>🖼️</button>
     <div class="counter" aria-live="polite"><span id="cur">1</span> <span>/ <span id="tot">16</span></span></div>
     <button class="nav-btn" id="nextBtn" type="button" aria-label="Siguiente diapositiva">→</button>
 </div>
@@ -1546,45 +1549,148 @@ up();
 exportPdfBtn.addEventListener('click',()=>window.print());
 
 // exportar a PPTX generando imágenes de cada slide
-exportPptBtn.addEventListener('click',exportToPPT);
+exportPptBtn.addEventListener('click',async()=>{
+    try{
+        await ensureHtml2canvas();
+        await exportToPPT();
+    } catch(err){
+        console.error('No se pudo preparar exportación PPTX:',err);
+        alert('Error preparando la exportación a PowerPoint. Revisa la consola.');
+    }
+});
 
-// secreto: Ctrl+Shift+E para mostrar opciones (sólo si se introduce contraseña correcta)
-document.addEventListener('keydown',e=>{
+// exportar imagen de página completa
+exportImgBtn.addEventListener('click',async()=>{
+    try{
+        await ensureHtml2canvas();
+        await exportPageImage();
+    } catch(err){
+        console.error('No se pudo preparar exportación de imagen:',err);
+        alert('Error preparando la imagen. Revisa la consola.');
+    }
+});
+
+// secret: configuración de exportación protegida mediante hash de contraseña
+targetPasswordHash = 'fedbaf8b95d659b32ff34389239887c425650be418d399585aa229ec9ac8fee4';
+
+async function sha256(text){
+    const data=new TextEncoder().encode(text);
+    const hash=await crypto.subtle.digest('SHA-256',data);
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function unlockExport(){
+    document.querySelectorAll('.export-btn').forEach(b=>{b.hidden=false; b.classList.add('visible');});
+    sessionStorage.setItem('exportUnlocked','1');
+}
+
+// restaurar estado al recargar
+if(sessionStorage.getItem('exportUnlocked')) unlockExport();
+
+document.addEventListener('keydown',async e=>{
     if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='e'){
         e.preventDefault();
-        const pass=prompt('Contraseña para activar exportación:');
-        if(pass === '1511030117'){ // cambia la clave aquí
-            document.querySelectorAll('.export-btn').forEach(b=>{b.hidden=false; b.classList.add('visible');});
-            alert('Opciones de exportación habilitadas');
-        } else {
-            alert('Contraseña incorrecta');
+        const pass=prompt('Introduce contraseña para activar exportación:');
+        if(pass){
+            const h=await sha256(pass);
+            if(h===targetPasswordHash){
+                unlockExport();
+                alert('Opciones de exportación habilitadas');
+            } else {
+                alert('Contraseña incorrecta');
+            }
         }
     }
 });
+
+// cargador dinámico de scripts externo
+function loadScript(url){
+    return new Promise((resolve,reject)=>{
+        const s=document.createElement('script');
+        s.src=url;
+        s.onload=()=>resolve();
+        s.onerror=(e)=>{
+            console.error('Error cargando script',url,e);
+            reject(new Error('No se pudo cargar '+url));
+        };
+        document.head.appendChild(s);
+    });
+}
+
+// garantiza que html2canvas esté disponible, cargándolo si es necesario
+let html2canvasReady=false;
+async function ensureHtml2canvas(){
+    if(typeof html2canvas==='undefined'){
+        // primero intenta cargar versión local (útil si no hay Internet)
+        try{
+            await loadScript('./html2canvas.min.js');
+        } catch(e){
+            console.warn('No se encontró html2canvas local, intentando CDN',e);
+            // finalmente intenta CDN
+            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js');
+        }
+    }
+    html2canvasReady=true;
+}
 
 async function exportToPPT(){
     const pptx=new PptxGenJS();
     const navBar=document.querySelector('.nav');
     const quick=document.querySelector('.quick-index');
     const panel=document.getElementById('presenterPanel');
+
+    // guardar estado actual de la diapositiva
+    const originalIndex=c;
+
     // ocultar controles
     [navBar,quick,panel].forEach(el=>{if(el)el.style.visibility='hidden';});
 
-    for(let i=0;i<t;i++){
-        const slideEl=s[i];
-        const wasActive=slideEl.classList.contains('active');
-        slideEl.classList.add('active');
-        await new Promise(r=>setTimeout(r,100));
-        const canvas=await html2canvas(slideEl,{backgroundColor:null,scale:2});
-        const imgData=canvas.toDataURL('image/png');
-        pptx.addSlide().addImage({data:imgData,x:0,y:0,w:'100%',h:'100%'});
-        if(!wasActive) slideEl.classList.remove('active');
+    try{
+        for(let i=0;i<t;i++){
+            // cambiar a la diapositiva i y esperar el render
+            gt(i);
+            await new Promise(r=>setTimeout(r,300));
+            const slideEl=s[i];
+            if(typeof html2canvas==='undefined'){
+                throw new Error('html2canvas no está disponible');
+            }
+            const canvas=await html2canvas(slideEl,{backgroundColor:null,scale:2});
+            const imgData=canvas.toDataURL('image/png');
+            pptx.addSlide().addImage({data:imgData,x:0,y:0,w:'100%',h:'100%'});
+        }
+    } catch(err){
+        console.error('Error al generar PPTX:', err);
+        alert('Ocurrió un error al generar el PowerPoint. Mira la consola para más detalles.');
+    } finally{
+        // restaurar controles y slide original
+        [navBar,quick,panel].forEach(el=>{if(el)el.style.visibility='';});
+        gt(originalIndex);
     }
 
-    // restaurar controles
-    [navBar,quick,panel].forEach(el=>{if(el)el.style.visibility='';});
+    try{
+        await pptx.writeFile({fileName:'presentacion.pptx'});
+    } catch(err){
+        console.error('Error al descargar PPTX:', err);
+        alert('No se pudo descargar el archivo PPTX.');
+    }
+}
 
-    pptx.writeFile({fileName:'presentacion.pptx'});
+// descarga una imagen PNG de la página completa
+async function exportPageImage(){
+    try{
+        if(typeof html2canvas==='undefined'){
+            throw new Error('html2canvas no está disponible');
+        }
+        const canvas=await html2canvas(document.body,{backgroundColor:null,scale:2,scrollY:-window.scrollY});
+        const imgData=canvas.toDataURL('image/png');
+        const link=document.createElement('a');
+        link.href=imgData;
+        link.download='pagina.png';
+        link.click();
+    } catch(err){
+        console.error('Error al generar imagen de la página:', err);
+        alert('No se pudo crear la imagen. Revisa la consola.');
+    }
 }
 </script>
 
