@@ -303,6 +303,17 @@
         .kbd-hint:hover{opacity:1}
         kbd{background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;font-size:10px;font-family:'JetBrains Mono',monospace;margin:0 2px}
 
+        /* ===== PRESENTER TOOLS ===== */
+        .quick-index{position:fixed;top:16px;left:16px;z-index:1000;display:flex;gap:6px;flex-wrap:wrap;max-width:min(70vw,720px)}
+        .q-btn{border:1px solid rgba(255,255,255,0.14);background:rgba(15,23,42,0.72);color:var(--gr2);padding:6px 10px;border-radius:999px;font-size:11px;cursor:pointer;backdrop-filter:blur(10px);transition:all .2s ease}
+        .q-btn:hover{color:var(--w);border-color:rgba(255,255,255,0.3);transform:translateY(-1px)}
+        .q-btn.active{background:var(--p);color:var(--w);border-color:transparent}        .presenter-panel{position:fixed;right:16px;bottom:84px;z-index:1000;width:min(420px,92vw);max-height:56vh;overflow:auto;background:rgba(15,23,42,0.94);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:14px 16px;box-shadow:var(--sh3)}
+        .presenter-panel[hidden]{display:none}
+        .presenter-title{font-family:'Poppins',sans-serif;color:var(--w);font-size:14px;font-weight:700;margin-bottom:6px}
+        .presenter-note{color:var(--gr2);font-size:12px;line-height:1.6}
+        @media(max-width:768px){
+            .quick-index{display:none}            .presenter-panel{bottom:146px;right:12px}
+        }
         /* ===== ANIMATIONS ===== */
         .fu{opacity:0;transform:translateY(28px);transition:all .6s cubic-bezier(.4,0,.2,1)}
         .slide.active .fu{opacity:1;transform:translateY(0)}
@@ -390,8 +401,23 @@
 
 <div id="particles" aria-hidden="true"></div>
 <div class="progress" id="prog"></div>
-<div class="kbd-hint">Usa <kbd>←</kbd> <kbd>→</kbd> o <kbd>Espacio</kbd></div>
+<div class="kbd-hint">Usa <kbd>←</kbd> <kbd>→</kbd> <kbd>Espacio</kbd> · <kbd>N</kbd> notas</div>
 
+<div class="quick-index" id="quickIndex" role="navigation" aria-label="Atajos por módulo">
+    <button class="q-btn" type="button" data-target="2">Agenda</button>
+    <button class="q-btn" type="button" data-target="3">M1</button>
+    <button class="q-btn" type="button" data-target="5">M2</button>
+    <button class="q-btn" type="button" data-target="8">M3</button>
+    <button class="q-btn" type="button" data-target="11">M4</button>
+    <button class="q-btn" type="button" data-target="12">M5</button>
+    <button class="q-btn" type="button" data-target="15">M6</button>
+    <button class="q-btn" type="button" data-target="16">Cierre</button>
+</div>
+
+<aside class="presenter-panel" id="presenterPanel" hidden>
+    <div class="presenter-title" id="presenterTitle">Notas del presentador</div>
+    <div class="presenter-note" id="presenterNote">Presiona N para mostrar u ocultar estas notas.</div>
+</aside>
 <main class="slides-wrap" id="sw" role="main" aria-label="Presentación de estrategias de atención personalizada">
 
 <!-- ===================== SLIDE 1: PORTADA ===================== -->
@@ -1366,9 +1392,39 @@
 </div>
 
 <script>
-let c=0;const s=document.querySelectorAll('.slide'),t=s.length,pb=document.getElementById('prog'),dc=document.getElementById('dots');
+let c=0;
+const s=document.querySelectorAll('.slide');
+const t=s.length;
+const pb=document.getElementById('prog');
+const dc=document.getElementById('dots');
 const prevBtn=document.getElementById('prevBtn');
 const nextBtn=document.getElementById('nextBtn');
+const qButtons=document.querySelectorAll('.q-btn');
+const presenterPanel=document.getElementById('presenterPanel');
+const presenterTitle=document.getElementById('presenterTitle');
+const presenterNote=document.getElementById('presenterNote');
+
+const moduleStops=[2,3,5,8,11,12,15,16];
+const slideNotes={
+    1:'Apertura: plantea objetivo, contexto y por qué el tema importa hoy.',
+    2:'Presenta agenda y duración aproximada por módulo para ordenar expectativas.',
+    3:'Define servicio cara a cara y su ventaja frente a canales impersonales.',
+    4:'Refuerza con evidencia y casos breves del impacto en confianza.',
+    5:'Introducción de prestezas: explica que son habilidades observables.',
+    6:'Profundiza en ejemplos de aplicación real con role-play.',
+    7:'Cierre del módulo: checklist corto para implementación del equipo.',
+    8:'Estrategia: segmentación y diseño de experiencia por tipo de cliente.',
+    9:'Métricas NPS/CSAT/CES: explica para qué sirve cada una.',
+    10:'SWOT y decisiones: qué mantener, qué corregir y qué priorizar.',
+    11:'Valor agregado: cómo superar expectativas sin elevar costos en exceso.',
+    12:'CRM: concepto, propósito y relación con atención presencial.',
+    13:'Compara herramientas por tamaño de empresa y complejidad.',
+    14:'Componentes clave del CRM y retorno esperado por etapa.',
+    15:'Integración final: humano + proceso + tecnología.',
+    16:'Cierre y llamado a acción con próximos pasos concretos.'
+};
+
+
 for(let i=0;i<t;i++){
     const d=document.createElement('button');
     d.type='button';
@@ -1378,12 +1434,42 @@ for(let i=0;i<t;i++){
     d.addEventListener('click',()=>gt(i));
     dc.appendChild(d);
 }
+
+qButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        const slideNumber=parseInt(btn.getAttribute('data-target'),10);
+        if(Number.isInteger(slideNumber))gt(slideNumber-1);
+    });
+});
+
 prevBtn.addEventListener('click',()=>go(-1));
 nextBtn.addEventListener('click',()=>go(1));
 
-// Particles
 const pc=document.getElementById('particles');
-for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const sz=Math.random()*4+2;p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s;background:${['#2563eb','#06b6d4','#10b981','#f59e0b','#8b5cf6'][Math.floor(Math.random()*5)]}`;pc.appendChild(p)}
+for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const sz=Math.random()*4+2;
+    p.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(Math.random()*100)+'%;animation-duration:'+(Math.random()*20+15)+'s;animation-delay:'+(Math.random()*10)+'s;background:'+['#2563eb','#06b6d4','#10b981','#f59e0b','#8b5cf6'][Math.floor(Math.random()*5)] + ';';
+    pc.appendChild(p);
+}
+
+function updatePresenter(){
+    const slideNumber=c+1;
+    presenterTitle.textContent='Notas · Diapositiva '+slideNumber;
+    presenterNote.textContent=slideNotes[slideNumber] || 'Enfatiza idea central, evidencia y acción concreta para este bloque.';
+}
+
+function updateQuickIndex(){
+    qButtons.forEach(btn=>{
+        const target=parseInt(btn.getAttribute('data-target'),10);
+        const isActive = moduleStops.some((start,idx)=>{
+            const next=moduleStops[idx+1] || (t+1);
+            return target===start && (c+1)>=start && (c+1)<next;
+        });
+        btn.classList.toggle('active',isActive);
+    });
+}
 
 function up(){
     s.forEach((sl,i)=>{
@@ -1405,22 +1491,46 @@ function up(){
     });
     prevBtn.disabled=c===0;
     nextBtn.disabled=c===t-1;
+    updateQuickIndex();
+    updatePresenter();
 }
-function go(d){const n=c+d;if(n>=0&&n<t){c=n;up()}}
-function gt(i){c=i;up()}
+
+function go(d){
+    const n=c+d;
+    if(n>=0&&n<t){
+        c=n;
+        up();
+    }
+}
+
+function gt(i){
+    c=i;
+    up();
+}
+
 document.addEventListener('keydown',e=>{
     if(['ArrowRight',' ','Enter'].includes(e.key)){e.preventDefault();go(1)}
     else if(['ArrowLeft','Backspace'].includes(e.key)){e.preventDefault();go(-1)}
     else if(e.key==='Home'){e.preventDefault();gt(0)}
     else if(e.key==='End'){e.preventDefault();gt(t-1)}
+    else if(e.key.toLowerCase()==='n'){e.preventDefault();presenterPanel.hidden=!presenterPanel.hidden}
 });
+
 let ts=0;
 document.addEventListener('touchstart',e=>ts=e.changedTouches[0].screenX);
-document.addEventListener('touchend',e=>{const d=ts-e.changedTouches[0].screenX;if(Math.abs(d)>50){d>0?go(1):go(-1)}});
-// Se elimina la navegación por rueda para permitir scroll normal dentro de cada slide.
-document.getElementById('tot').textContent=t;up();
+document.addEventListener('touchend',e=>{
+    const d=ts-e.changedTouches[0].screenX;
+    if(Math.abs(d)>50){d>0?go(1):go(-1)}
+});
+
+document.getElementById('tot').textContent=t;
+up();
 </script>
 
 </body>
 </html>
+
+
+
+
 
