@@ -1383,7 +1383,7 @@ document.addEventListener('keydown',e=>{
 let ts=0;
 document.addEventListener('touchstart',e=>ts=e.changedTouches[0].screenX);
 document.addEventListener('touchend',e=>{const d=ts-e.changedTouches[0].screenX;if(Math.abs(d)>50){d>0?go(1):go(-1)}});
-let wt;document.addEventListener('wheel',e=>{clearTimeout(wt);wt=setTimeout(()=>{e.deltaY>0?go(1):go(-1)},120)});
+// Se elimina la navegación por rueda para permitir scroll normal dentro de cada slide.
 document.getElementById('tot').textContent=t;up();
 </script>
 
