@@ -302,6 +302,14 @@
         .dot-btn.active{background:var(--p);width:22px;border-radius:4px}
         .dot-btn:hover{background:rgba(255,255,255,0.3)}
         .nav-btn:focus-visible,.dot-btn:focus-visible{outline:2px solid var(--s);outline-offset:2px}
+        /* ocultar controles al imprimir */
+        @media print{
+            .nav, .quick-index, .presenter-panel{display:none !important}
+        }
+        /* export buttons initially ocultos; se muestran tras autenticación */
+        .export-btn{display:none}
+        .export-btn.visible{display:flex}
+
         .progress{position:fixed;top:0;left:0;height:3px;background:var(--gd1);z-index:1001;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(37,99,235,0.4)}
         .kbd-hint{position:fixed;top:16px;right:16px;background:rgba(15,23,42,0.7);backdrop-filter:blur(10px);padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);color:var(--gr2);font-size:10px;z-index:1000;opacity:.5;transition:opacity .3s}
         .kbd-hint:hover{opacity:1}
@@ -1388,6 +1396,8 @@
 <div class="nav" role="navigation" aria-label="Navegación de diapositivas">
     <button class="nav-btn" id="prevBtn" type="button" aria-label="Diapositiva anterior" disabled>←</button>
     <div class="dots" id="dots"></div>
+    <button class="nav-btn export-btn" id="exportPdfBtn" type="button" aria-label="Exportar a PDF" hidden>🖨️</button>
+    <button class="nav-btn export-btn" id="exportPptBtn" type="button" aria-label="Descargar PowerPoint" hidden>📄</button>
     <div class="counter" aria-live="polite"><span id="cur">1</span> <span>/ <span id="tot">16</span></span></div>
     <button class="nav-btn" id="nextBtn" type="button" aria-label="Siguiente diapositiva">→</button>
 </div>
@@ -1526,6 +1536,56 @@ document.addEventListener('touchend',e=>{
 
 document.getElementById('tot').textContent=t;
 up();
+</script>
+
+<!-- librerías para exportar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js" integrity="sha512-YcsIPfMJkGfhrYq2QWlGYGIdxrBxPwsvEz62Y7Zpf23r8SB1NizDJ1QJm3W34gg9RzVygXnOHhc2rzeKYhFzMw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PptxGenJS/3.2.0/pptxgen.bundle.min.js" integrity="sha512-D/cCZkOLCKUEnQBYs6Y4DJ7+h8QFjVt+TKj9NfbhZSnMbFFeVRO6OJ333i4djKv1qXiYJ7XrfdPRk0MdNsYk+g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+// exportar PDF usando funcionalidad de impresión del navegador
+exportPdfBtn.addEventListener('click',()=>window.print());
+
+// exportar a PPTX generando imágenes de cada slide
+exportPptBtn.addEventListener('click',exportToPPT);
+
+// secreto: Ctrl+Shift+E para mostrar opciones (sólo si se introduce contraseña correcta)
+document.addEventListener('keydown',e=>{
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase()==='e'){
+        e.preventDefault();
+        const pass=prompt('Contraseña para activar exportación:');
+        if(pass === '1511030117'){ // cambia la clave aquí
+            document.querySelectorAll('.export-btn').forEach(b=>{b.hidden=false; b.classList.add('visible');});
+            alert('Opciones de exportación habilitadas');
+        } else {
+            alert('Contraseña incorrecta');
+        }
+    }
+});
+
+async function exportToPPT(){
+    const pptx=new PptxGenJS();
+    const navBar=document.querySelector('.nav');
+    const quick=document.querySelector('.quick-index');
+    const panel=document.getElementById('presenterPanel');
+    // ocultar controles
+    [navBar,quick,panel].forEach(el=>{if(el)el.style.visibility='hidden';});
+
+    for(let i=0;i<t;i++){
+        const slideEl=s[i];
+        const wasActive=slideEl.classList.contains('active');
+        slideEl.classList.add('active');
+        await new Promise(r=>setTimeout(r,100));
+        const canvas=await html2canvas(slideEl,{backgroundColor:null,scale:2});
+        const imgData=canvas.toDataURL('image/png');
+        pptx.addSlide().addImage({data:imgData,x:0,y:0,w:'100%',h:'100%'});
+        if(!wasActive) slideEl.classList.remove('active');
+    }
+
+    // restaurar controles
+    [navBar,quick,panel].forEach(el=>{if(el)el.style.visibility='';});
+
+    pptx.writeFile({fileName:'presentacion.pptx'});
+}
 </script>
 
 </body>
