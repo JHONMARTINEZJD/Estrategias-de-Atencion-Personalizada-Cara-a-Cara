@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategias de Atención Personalizada Cara a Cara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --p:#2563eb;--p2:#1d4ed8;--p3:#3b82f6;--p-light:#dbeafe;
+            --s:#06b6d4;--s2:#0891b2;
+            --acc:#f59e0b;--acc2:#d97706;
+            --g:#10b981;--g2:#059669;--g-light:#d1fae5;
+            --r:#ef4444;--r2:#dc2626;--r-light:#fee2e2;
+            --v:#8b5cf6;--v2:#7c3aed;--v-light:#ede9fe;
+            --d1:#0f172a;--d2:#1e293b;--d3:#334155;--d4:#475569;
+            --gr:#64748b;--gr2:#94a3b8;--gr3:#cbd5e1;
+            --l1:#f8fafc;--l2:#f1f5f9;--l3:#e2e8f0;
+            --w:#ffffff;
+            --gd1:linear-gradient(135deg,#2563eb 0%,#06b6d4 100%);
+            --gd2:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
+            --gd3:linear-gradient(135deg,#f59e0b 0%,#ef4444 100%);
+            --gd4:linear-gradient(135deg,#10b981 0%,#06b6d4 100%);
+            --gd5:linear-gradient(135deg,#8b5cf6 0%,#ec4899 100%);
+            --gd6:linear-gradient(135deg,#1e293b 0%,#0f172a 50%,#1a2332 100%);
+            --sh:0 25px 60px rgba(0,0,0,0.12);
+            --sh2:0 4px 20px rgba(0,0,0,0.06);
+            --sh3:0 30px 80px rgba(0,0,0,0.18);
+            --radius:20px;
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--d1);color:var(--d1);overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased}
+
+        /* ===== PARTICLES ===== */
+        #particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        .particle{position:absolute;border-radius:50%;opacity:0.08;animation:floatP linear infinite}
+        @keyframes floatP{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:0.08}90%{opacity:0.08}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+
+        /* ===== SLIDES ===== */
+        .slides-wrap{width:100vw;height:100vh;position:relative;overflow:hidden;z-index:1}
+        .slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .7s cubic-bezier(.4,0,.2,1);transform:scale(0.96) translateY(30px);padding:60px 40px 100px}
+        .slide.active{opacity:1;visibility:visible;transform:scale(1) translateY(0)}
+        .slide.exit{opacity:0;transform:scale(0.96) translateY(-30px)}
+        .slide-inner{width:100%;max-width:1280px;max-height:85vh;overflow-y:auto;scrollbar-width:none;position:relative;z-index:2}
+        .slide-inner::-webkit-scrollbar{display:none}
+
+        /* ===== BACKGROUNDS ===== */
+        .bg-dark{background:var(--gd6)}
+        .bg-light{background:linear-gradient(180deg,var(--l1) 0%,var(--l2) 100%)}
+        .bg-gradient{background:var(--gd1);position:relative;overflow:hidden}
+        .bg-gradient::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+        .bg-accent{background:linear-gradient(135deg,#0f172a 0%,#1a1a2e 50%,#16213e 100%)}
+
+        /* ===== DECORATIVE SHAPES ===== */
+        .deco-circle{position:absolute;border-radius:50%;pointer-events:none}
+        .deco-1{width:500px;height:500px;top:-200px;right:-150px;background:radial-gradient(circle,rgba(37,99,235,0.08) 0%,transparent 70%);animation:breathe 8s ease-in-out infinite}
+        .deco-2{width:400px;height:400px;bottom:-150px;left:-100px;background:radial-gradient(circle,rgba(6,182,212,0.06) 0%,transparent 70%);animation:breathe 10s ease-in-out infinite reverse}
+        .deco-3{width:300px;height:300px;top:50%;right:-100px;background:radial-gradient(circle,rgba(245,158,11,0.06) 0%,transparent 70%);animation:breathe 7s ease-in-out infinite}
+        @keyframes breathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.3);opacity:1}}
+
+        /* ===== HEADER ===== */
+        .s-header{margin-bottom:36px}
+        .s-tag{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;margin-bottom:14px;padding:6px 16px;border-radius:50px}
+        .s-tag-blue{background:rgba(37,99,235,0.1);color:var(--p)}
+        .s-tag-white{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7)}
+        .s-tag-green{background:rgba(16,185,129,0.1);color:var(--g)}
+        .s-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 2s infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+        .s-title{font-family:'Poppins',sans-serif;font-size:clamp(26px,3.5vw,44px);font-weight:800;line-height:1.15;letter-spacing:-1px}
+        .s-title-dark{color:var(--d1)}
+        .s-title-light{color:var(--w)}
+        .s-title .hl{background:var(--gd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .s-title .hl2{background:var(--gd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .s-title .hl3{background:var(--gd3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .s-title .hl4{background:var(--gd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .s-desc{font-size:16px;color:var(--gr);margin-top:10px;max-width:700px;line-height:1.7}
+        .s-desc-light{color:var(--gr2)}
+
+        /* ===== CARDS ===== */
+        .grid{display:grid;gap:20px}
+        .g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+        .g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+        .g4{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+        .card{background:var(--w);border-radius:var(--radius);padding:30px;box-shadow:var(--sh2);transition:all .4s cubic-bezier(.4,0,.2,1);border:1px solid rgba(0,0,0,0.04);position:relative;overflow:hidden}
+        .card::after{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gd1);transform:scaleX(0);transition:transform .4s ease;transform-origin:left}
+        .card:hover{transform:translateY(-6px);box-shadow:var(--sh)}
+        .card:hover::after{transform:scaleX(1)}
+        .card-dark{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(20px)}
+        .card-dark:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.12)}
+        .card-accent{border-left:4px solid var(--p)}
+        .card-accent-g{border-left:4px solid var(--g)}
+        .card-accent-o{border-left:4px solid var(--acc)}
+        .card-accent-r{border-left:4px solid var(--r)}
+        .card-accent-v{border-left:4px solid var(--v)}
+
+        .c-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px;flex-shrink:0}
+        .ci-b{background:var(--p-light)}
+        .ci-g{background:var(--g-light)}
+        .ci-o{background:#fef3c7}
+        .ci-r{background:var(--r-light)}
+        .ci-v{background:var(--v-light)}
+        .ci-t{background:#ccfbf1}
+        .ci-dark{background:rgba(255,255,255,0.06)}
+
+        .c-title{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;color:var(--d1)}
+        .card-dark .c-title{color:var(--w)}
+        .c-text{font-size:14px;color:var(--gr);line-height:1.7}
+        .card-dark .c-text{color:var(--gr2)}
+        .c-list{list-style:none;padding:0}
+        .c-list li{padding:5px 0 5px 20px;position:relative;font-size:14px;color:var(--gr);line-height:1.6}
+        .card-dark .c-list li{color:var(--gr2)}
+        .c-list li::before{content:'→';position:absolute;left:0;color:var(--p);font-weight:700}
+        .card-dark .c-list li::before{color:var(--s)}
+        .c-list-check li::before{content:'✓';color:var(--g)}
+
+        /* ===== BADGES ===== */
+        .badge{display:inline-block;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:600;letter-spacing:.5px}
+        .b-blue{background:var(--p-light);color:var(--p2)}
+        .b-green{background:var(--g-light);color:var(--g2)}
+        .b-orange{background:#fef3c7;color:var(--acc2)}
+        .b-red{background:var(--r-light);color:var(--r2)}
+        .b-purple{background:var(--v-light);color:var(--v2)}
+        .b-dark{background:rgba(255,255,255,0.08);color:var(--gr2)}
+
+        /* ===== STATS ===== */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
+        .stat{background:var(--w);border-radius:var(--radius);padding:28px 24px;text-align:center;box-shadow:var(--sh2);transition:transform .3s ease;position:relative;overflow:hidden}
+        .stat::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gd1)}
+        .stat:hover{transform:translateY(-5px) scale(1.02)}
+        .stat-dark{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+        .stat-dark::before{background:var(--gd4)}
+        .stat-num{font-family:'Poppins',sans-serif;font-size:clamp(28px,3.5vw,42px);font-weight:800;line-height:1;margin-bottom:6px}
+        .sn-b{background:var(--gd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .sn-g{background:var(--gd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .sn-o{background:var(--gd3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .sn-v{background:var(--gd5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .stat-label{font-size:13px;color:var(--gr);font-weight:500}
+        .stat-dark .stat-label{color:var(--gr2)}
+        .stat-src{font-size:10px;color:var(--gr2);margin-top:6px;font-style:italic}
+
+        /* ===== QUOTE ===== */
+        .quote{border-radius:var(--radius);padding:32px 36px;position:relative;margin:24px 0}
+        .quote-blue{background:var(--gd1)}
+        .quote-green{background:var(--gd4)}
+        .quote-dark{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
+        .quote::before{content:'"';position:absolute;top:-8px;left:24px;font-size:72px;font-family:'Poppins',sans-serif;color:rgba(255,255,255,0.15);line-height:1}
+        .quote p{color:var(--w);font-size:17px;font-style:italic;line-height:1.7;position:relative;z-index:1}
+        .quote-dark p{color:var(--gr2)}
+        .quote .q-author{color:rgba(255,255,255,0.6);font-size:13px;font-style:normal;margin-top:12px;font-weight:600}
+        .quote-dark .q-author{color:var(--gr)}
+        .quote .q-src{color:rgba(255,255,255,0.4);font-size:11px;font-style:normal}
+
+        /* ===== TRIADA ===== */
+        .triada{display:flex;align-items:center;justify-content:center;gap:16px;margin:28px 0;flex-wrap:wrap}
+        .tri-item{background:var(--w);border-radius:16px;padding:22px 30px;text-align:center;box-shadow:var(--sh2);min-width:150px;transition:transform .3s ease}
+        .tri-item:hover{transform:translateY(-5px)}
+        .tri-item-dark{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)}
+        .tri-icon{font-size:32px;margin-bottom:8px}
+        .tri-h{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--d1)}
+        .tri-item-dark .tri-h{color:var(--w)}
+        .tri-p{font-size:11px;color:var(--gr);margin-top:2px}
+        .tri-item-dark .tri-p{color:var(--gr2)}
+        .tri-arrow{font-size:24px;color:var(--p);font-weight:700}
+        .tri-arrow-light{color:var(--s)}
+
+        /* ===== TABLE ===== */
+        .s-table{width:100%;border-collapse:separate;border-spacing:0 8px}
+        .s-table th{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gr);text-align:left;padding:10px 18px}
+        .bg-dark .s-table th{color:var(--gr2)}
+        .s-table td{padding:16px 18px;font-size:14px;color:var(--d2);background:var(--w);border:none;transition:background .3s}
+        .bg-dark .s-table td{background:rgba(255,255,255,0.04);color:var(--gr2)}
+        .s-table tr:hover td{background:var(--p-light)}
+        .bg-dark .s-table tr:hover td{background:rgba(37,99,235,0.1)}
+        .s-table tr td:first-child{border-radius:12px 0 0 12px;font-weight:600}
+        .s-table tr td:last-child{border-radius:0 12px 12px 0}
+        .t-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--gd1);color:var(--w);font-size:13px;font-weight:700;margin-right:8px}
+        .t-num-g{background:var(--gd4)}
+
+        /* ===== TOOLS GRID ===== */
+        .tools-g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+        .tool{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;text-align:center;transition:all .3s ease}
+        .tool:hover{background:rgba(255,255,255,0.08);transform:translateY(-4px);border-color:rgba(255,255,255,0.15)}
+        .tool-i{font-size:36px;margin-bottom:10px}
+        .tool h4{font-family:'Poppins',sans-serif;color:var(--w);font-size:16px;font-weight:700;margin-bottom:4px}
+        .tool p{font-size:12px;color:var(--gr2)}
+
+        /* ===== RESULTS BOX ===== */
+        .results{background:var(--gd4);border-radius:var(--radius);padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin:20px 0}
+        .res-item{text-align:center}
+        .res-num{font-family:'Poppins',sans-serif;font-size:26px;font-weight:800;color:var(--w)}
+        .res-label{font-size:11px;color:rgba(255,255,255,0.75);margin-top:3px}
+
+        /* ===== CTA ===== */
+        .cta{background:var(--gd3);border-radius:var(--radius);padding:28px 36px;text-align:center;margin-top:20px}
+        .cta h3{font-family:'Poppins',sans-serif;color:var(--w);font-size:20px;font-weight:700}
+        .cta p{color:rgba(255,255,255,0.8);font-size:14px;margin-top:4px}
+
+        /* ===== FORMULA ===== */
+        .formula{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin:32px 0}
+        .f-item{background:var(--w);border-radius:16px;padding:22px 28px;text-align:center;box-shadow:var(--sh2);min-width:180px}
+        .f-item h4{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--d1);line-height:1.3}
+        .f-item .f-sub{font-size:11px;color:var(--gr);margin-top:4px}
+        .f-op{font-family:'Poppins',sans-serif;font-size:28px;font-weight:800;color:var(--p)}
+        .f-result{background:var(--gd1);border-radius:16px;padding:22px 28px;text-align:center;min-width:180px}
+        .f-result h4{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--w);line-height:1.3}
+        .f-result .f-sub{font-size:11px;color:rgba(255,255,255,0.65);margin-top:4px}
+
+        /* ===== TWO COLUMNS ===== */
+        .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+
+        /* ===== TIMELINE ===== */
+        .timeline{position:relative;padding-left:36px;margin:20px 0}
+        .timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--p),var(--s),var(--g))}
+        .tl-item{position:relative;padding:16px 0}
+        .tl-dot{position:absolute;left:-30px;top:20px;width:12px;height:12px;border-radius:50%;background:var(--p);border:3px solid var(--p-light);z-index:1}
+        .tl-dot-g{background:var(--g);border-color:var(--g-light)}
+        .tl-dot-o{background:var(--acc);border-color:#fef3c7}
+        .tl-title{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--d1);margin-bottom:4px}
+        .bg-dark .tl-title{color:var(--w)}
+        .tl-text{font-size:13px;color:var(--gr);line-height:1.6}
+        .bg-dark .tl-text{color:var(--gr2)}
+
+        /* ===== ICON ROW ===== */
+        .icon-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+        .ir-item{display:flex;align-items:center;gap:8px;background:var(--w);padding:8px 16px;border-radius:10px;font-size:13px;color:var(--d2);box-shadow:var(--sh2)}
+        .ir-item-dark{background:rgba(255,255,255,0.05);color:var(--gr2);border:1px solid rgba(255,255,255,0.06)}
+
+        /* ===== COMPARISON ===== */
+        .compare{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin:24px 0}
+        .comp-box{border-radius:var(--radius);padding:28px;text-align:center}
+        .comp-bad{background:var(--r-light);border:2px solid rgba(239,68,68,0.2)}
+        .comp-good{background:var(--g-light);border:2px solid rgba(16,185,129,0.2)}
+        .comp-vs{font-family:'Poppins',sans-serif;font-size:24px;font-weight:800;color:var(--gr2)}
+        .comp-title{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px}
+        .comp-bad .comp-title{color:var(--r2)}
+        .comp-good .comp-title{color:var(--g2)}
+        .comp-list{list-style:none;padding:0;text-align:left}
+        .comp-list li{padding:4px 0;font-size:13px;color:var(--d3)}
+
+        /* ===== COVER SPECIFIC ===== */
+        .cover-wrap{text-align:center;position:relative;z-index:2}
+        .cover-icon{font-size:72px;margin-bottom:24px;display:inline-block;animation:float 3s ease-in-out infinite}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        .cover-title{font-family:'Poppins',sans-serif;font-size:clamp(30px,4.5vw,60px);font-weight:900;color:var(--w);line-height:1.1;margin-bottom:18px;letter-spacing:-2px}
+        .cover-sub{font-size:clamp(15px,2vw,20px);color:var(--gr2);font-weight:300;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6}
+        .cover-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:12px 28px;border-radius:50px;color:var(--gr2);font-size:13px;backdrop-filter:blur(10px)}
+        .cover-badge .dot{width:8px;height:8px;background:var(--g);border-radius:50%;animation:blink 2s infinite}
+        .cover-tags{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+        .cover-tag{padding:8px 18px;border-radius:10px;font-size:12px;font-weight:600;background:rgba(255,255,255,0.05);color:var(--gr2);border:1px solid rgba(255,255,255,0.08)}
+
+        /* ===== CLOSING ===== */
+        .close-wrap{text-align:center;position:relative;z-index:2}
+        .close-icon{font-size:64px;margin-bottom:20px;display:inline-block;animation:float 3s ease-in-out infinite}
+        .close-title{font-family:'Poppins',sans-serif;font-size:clamp(32px,4vw,56px);font-weight:800;color:var(--w);margin-bottom:12px}
+        .close-sub{font-size:18px;color:var(--gr2);margin-bottom:36px}
+        .refs{text-align:left;max-width:640px;margin:0 auto;padding:28px;background:rgba(255,255,255,0.03);border-radius:16px;border:1px solid rgba(255,255,255,0.06)}
+        .refs h4{font-family:'Poppins',sans-serif;color:var(--gr2);font-size:12px;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px}
+        .refs ul{list-style:none;padding:0}
+        .refs ul li{font-size:12px;color:var(--gr);padding:3px 0;padding-left:16px;position:relative}
+        .refs ul li::before{content:'•';position:absolute;left:0;color:var(--p)}
+
+        /* ===== IMPORTANT BOX ===== */
+        .imp-box{background:linear-gradient(135deg,rgba(37,99,235,0.08),rgba(6,182,212,0.08));border:1px solid rgba(37,99,235,0.15);border-radius:16px;padding:24px 28px;margin:16px 0}
+        .imp-box-dark{background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.15)}
+        .imp-title{font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--p);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+        .imp-box-dark .imp-title{color:var(--p3)}
+        .imp-text{font-size:13px;color:var(--d3);line-height:1.7}
+        .imp-box-dark .imp-text{color:var(--gr2)}
+
+        /* ===== SCENARIO BOX ===== */
+        .scenario{background:var(--w);border-radius:var(--radius);padding:28px;box-shadow:var(--sh2);border:1px solid var(--l3);margin:16px 0}
+        .scenario-dark{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}
+        .sc-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+        .sc-badge{padding:4px 12px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+        .sc-badge-case{background:var(--v-light);color:var(--v2)}
+        .sc-badge-tip{background:var(--g-light);color:var(--g2)}
+        .sc-badge-warn{background:var(--r-light);color:var(--r2)}
+        .sc-title{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--d1)}
+        .scenario-dark .sc-title{color:var(--w)}
+        .sc-text{font-size:13px;color:var(--gr);line-height:1.7}
+        .scenario-dark .sc-text{color:var(--gr2)}
+        .sc-result{margin-top:12px;padding:12px 16px;border-radius:10px;background:var(--g-light);font-size:13px;color:var(--g2);font-weight:500}
+        .scenario-dark .sc-result{background:rgba(16,185,129,0.1)}
+
+        /* ===== NAV ===== */
+        .nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:1000;background:rgba(15,23,42,0.9);backdrop-filter:blur(24px);padding:10px 20px;border-radius:60px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 40px rgba(0,0,0,0.4)}
+        .nav-btn{width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,0.06);color:var(--w);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;font-family:'Inter',sans-serif}
+        .nav-btn:hover{background:var(--p);transform:scale(1.1)}
+        .nav-btn:disabled{opacity:.25;cursor:not-allowed}
+        .nav-btn:disabled:hover{background:rgba(255,255,255,0.06);transform:none}
+        .counter{color:var(--w);font-size:13px;font-weight:600;min-width:50px;text-align:center;font-family:'JetBrains Mono',monospace}
+        .counter span{color:var(--gr2);font-weight:400}
+        .dots{display:flex;gap:5px}
+        .dot-btn{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;transition:all .3s ease;padding:0}
+        .dot-btn.active{background:var(--p);width:22px;border-radius:4px}
+        .dot-btn:hover{background:rgba(255,255,255,0.3)}
+        .progress{position:fixed;top:0;left:0;height:3px;background:var(--gd1);z-index:1001;transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(37,99,235,0.4)}
+        .kbd-hint{position:fixed;top:16px;right:16px;background:rgba(15,23,42,0.7);backdrop-filter:blur(10px);padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);color:var(--gr2);font-size:10px;z-index:1000;opacity:.5;transition:opacity .3s}
+        .kbd-hint:hover{opacity:1}
+        kbd{background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;font-size:10px;font-family:'JetBrains Mono',monospace;margin:0 2px}
+
+        /* ===== ANIMATIONS ===== */
+        .fu{opacity:0;transform:translateY(28px);transition:all .6s cubic-bezier(.4,0,.2,1)}
+        .slide.active .fu{opacity:1;transform:translateY(0)}
+        .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}.d7{transition-delay:.7s}.d8{transition-delay:.8s}
+
+        /* ===== SECTION DIVIDER ===== */
+        .divider{display:flex;align-items:center;gap:16px;margin:28px 0 20px}
+        .divider-line{flex:1;height:1px;background:var(--l3)}
+        .bg-dark .divider-line{background:rgba(255,255,255,0.08)}
+        .divider-text{font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gr2)}
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:768px){
+            .slide{padding:30px 20px 90px}
+            .g2,.g3,.g4{grid-template-columns:1fr}
+            .stats-grid{grid-template-columns:1fr 1fr}
+            .tools-g{grid-template-columns:1fr}
+            .two-col{grid-template-columns:1fr}
+            .triada{flex-direction:column}
+            .tri-arrow{transform:rotate(90deg)}
+            .formula{flex-direction:column}
+            .compare{grid-template-columns:1fr}
+            .comp-vs{padding:10px 0}
+            .dots{display:none}
+            .cover-tags{flex-direction:column;align-items:center}
+        }
+        @media(max-width:480px){.stats-grid{grid-template-columns:1fr}}
+
+        /* ===== HEARTBEAT ===== */
+        .heartbeat{animation:hb 1.4s infinite}
+        @keyframes hb{0%,100%{transform:scale(1)}14%{transform:scale(1.15)}28%{transform:scale(1)}42%{transform:scale(1.15)}56%{transform:scale(1)}}
+
+        /* ===== GLOW ===== */
+        .glow{box-shadow:0 0 30px rgba(37,99,235,0.2),0 0 60px rgba(37,99,235,0.1)}
+        .glow-g{box-shadow:0 0 30px rgba(16,185,129,0.2),0 0 60px rgba(16,185,129,0.1)}
+
+        /* ===== PROCESS FLOW ===== */
+        .process{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+        .proc-step{background:var(--w);border-radius:16px;padding:24px;text-align:center;box-shadow:var(--sh2);position:relative}
+        .proc-step-dark{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+        .proc-num{font-family:'Poppins',sans-serif;font-size:32px;font-weight:800;background:var(--gd1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+        .proc-title{font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--d1);margin-bottom:4px}
+        .proc-step-dark .proc-title{color:var(--w)}
+        .proc-text{font-size:12px;color:var(--gr)}
+        .proc-step-dark .proc-text{color:var(--gr2)}
+
+        /* ===== METER / GAUGE ===== */
+        .meter-row{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+        .meter{width:120px;text-align:center}
+        .meter-circle{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--p) var(--val),var(--l3) var(--val));display:flex;align-items:center;justify-content:center;margin:0 auto 8px;position:relative}
+        .meter-circle::after{content:'';position:absolute;inset:12px;border-radius:50%;background:var(--w)}
+        .bg-dark .meter-circle{background:conic-gradient(var(--s) var(--val),rgba(255,255,255,0.06) var(--val))}
+        .bg-dark .meter-circle::after{background:var(--d1)}
+        .meter-val{position:relative;z-index:1;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--d1)}
+        .bg-dark .meter-val{color:var(--w)}
+        .meter-label{font-size:11px;color:var(--gr);font-weight:500}
+        .bg-dark .meter-label{color:var(--gr2)}
+
+        /* ===== SIDEBAR LAYOUT ===== */
+        .side-layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:30px;align-items:start}
+        @media(max-width:768px){.side-layout{grid-template-columns:1fr}}
+
+        /* ===== NUMBERED LIST ===== */
+        .num-list{counter-reset:item;list-style:none;padding:0}
+        .num-list li{counter-increment:item;display:flex;align-items:flex-start;gap:14px;padding:12px 0;font-size:14px;color:var(--gr);line-height:1.6}
+        .bg-dark .num-list li{color:var(--gr2)}
+        .num-list li::before{content:counter(item,decimal-leading-zero);font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:var(--p);background:var(--p-light);width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .bg-dark .num-list li::before{background:rgba(37,99,235,0.15);color:var(--p3)}
+
+        /* ===== PILL TAGS ===== */
+        .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+        .pill{padding:4px 12px;border-radius:50px;font-size:11px;font-weight:600}
+
+        /* ===== SPEAKER NOTE ===== */
+        .note{margin-top:16px;padding:14px 18px;border-radius:12px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);font-size:12px;color:var(--acc2);display:flex;align-items:flex-start;gap:8px}
+        .note-icon{font-size:16px;flex-shrink:0}
+    </style>
+</head>
+<body>
+
+<div id="particles"></div>
+<div class="progress" id="prog"></div>
+<div class="kbd-hint">Usa <kbd>←</kbd> <kbd>→</kbd> o <kbd>Espacio</kbd></div>
+
+<div class="slides-wrap" id="sw">
+
+<!-- ===================== SLIDE 1: PORTADA ===================== -->
+<div class="slide bg-dark active" data-slide="1">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="slide-inner">
+        <div class="cover-wrap">
+            <div class="cover-icon fu">🤝</div>
+            <h1 class="cover-title fu d1">Estrategias de Atención<br><span class="hl">Personalizada Cara a Cara</span></h1>
+            <p class="cover-sub fu d2">Cómo construir relaciones duraderas, generar confianza inmediata y fidelizar clientes a través de la interacción humana directa</p>
+            <div class="cover-badge fu d3"><span class="dot"></span>Presentación Profesional • 2025</div>
+            <div class="cover-tags fu d4">
+                <span class="cover-tag">📋 Prestezas de Servicio</span>
+                <span class="cover-tag">📊 Estrategias & KPIs</span>
+                <span class="cover-tag">💻 CRM & Tecnología</span>
+                <span class="cover-tag">❤️ Valor Agregado</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 2: AGENDA ===================== -->
+<div class="slide bg-light" data-slide="2">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-blue">Hoja de Ruta</div>
+            <h2 class="s-title s-title-dark">¿Qué Vamos a <span class="hl">Aprender</span> Hoy?</h2>
+            <p class="s-desc">Un recorrido completo por las estrategias que transforman la atención al cliente en una ventaja competitiva sostenible.</p>
+        </div>
+        <div class="grid g3">
+            <div class="card card-accent fu d1">
+                <div class="c-icon ci-b">📖</div>
+                <div class="c-title">Módulo 1: Fundamentos</div>
+                <p class="c-text">Qué es el servicio cara a cara, por qué sigue siendo la herramienta más poderosa del servicio al cliente y cuáles son sus bases teóricas según Kotler y la Harvard Business Review.</p>
+                <div class="pills"><span class="pill b-blue">Diapositivas 3-4</span></div>
+            </div>
+            <div class="card card-accent-g fu d2">
+                <div class="c-icon ci-g">🎯</div>
+                <div class="c-title">Módulo 2: Las 6 Prestezas</div>
+                <p class="c-text">Análisis detallado de los 6 atributos esenciales: Respeto, Sonrisa, Conversación, Ayuda proactiva, Calma y Equidad. Con casos prácticos y técnicas aplicables.</p>
+                <div class="pills"><span class="pill b-green">Diapositivas 5-7</span></div>
+            </div>
+            <div class="card card-accent-o fu d3">
+                <div class="c-icon ci-o">📊</div>
+                <div class="c-title">Módulo 3: Estrategias</div>
+                <p class="c-text">Elementos clave para diseñar estrategias de servicio: qué ofrecer, quién, cómo, métricas de medición (NPS, CSAT, CES) y análisis competitivo SWOT.</p>
+                <div class="pills"><span class="pill b-orange">Diapositivas 8-10</span></div>
+            </div>
+            <div class="card card-accent-r fu d4">
+                <div class="c-icon ci-r">❤️</div>
+                <div class="c-title">Módulo 4: Valor Agregado</div>
+                <p class="c-text">La filosofía de "hacer más de lo esperado". Cómo convertir clientes satisfechos en promotores activos de tu marca con estrategias de sorpresa y deleite.</p>
+                <div class="pills"><span class="pill b-red">Diapositiva 11</span></div>
+            </div>
+            <div class="card card-accent-v fu d5">
+                <div class="c-icon ci-v">💻</div>
+                <div class="c-title">Módulo 5: CRM</div>
+                <p class="c-text">Customer Relationship Management: definición, herramientas líderes (Salesforce, HubSpot, Zoho), los 10 componentes clave y resultados medibles de implementación.</p>
+                <div class="pills"><span class="pill b-purple">Diapositivas 12-14</span></div>
+            </div>
+            <div class="card fu d6" style="border-left:4px solid var(--s)">
+                <div class="c-icon ci-t">🚀</div>
+                <div class="c-title">Módulo 6: Plan de Acción</div>
+                <p class="c-text">Conclusiones, integración de conceptos, checklist de implementación inmediata y próximos pasos para transformar tu servicio al cliente hoy mismo.</p>
+                <div class="pills"><span class="pill b-blue">Diapositivas 15-16</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 3: INTRO SERVICIO CARA A CARA ===================== -->
+<div class="slide bg-dark" data-slide="3">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-3"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 1 · Fundamentos</div>
+            <h2 class="s-title s-title-light">¿Qué es el Servicio <span class="hl">Cara a Cara</span>?</h2>
+            <p class="s-desc s-desc-light">La interacción directa entre el prestador de servicio y el cliente sigue siendo el canal más poderoso para crear vínculos emocionales y de confianza.</p>
+        </div>
+
+        <div class="side-layout">
+            <div>
+                <div class="grid g2" style="grid-template-columns:1fr 1fr">
+                    <div class="card card-dark fu d1">
+                        <div class="c-icon ci-dark">🏗️</div>
+                        <div class="c-title">Definición</div>
+                        <p class="c-text">Es la interacción directa, presencial y personalizada entre un colaborador de servicio y un cliente. Según <strong>Philip Kotler</strong>, constituye la primera y más crítica herramienta del marketing de servicios, donde el factor humano determina la percepción total de calidad.</p>
+                    </div>
+                    <div class="card card-dark fu d2">
+                        <div class="c-icon ci-dark">🧠</div>
+                        <div class="c-title">Base Científica</div>
+                        <p class="c-text">Estudios de neurociencia (Harvard, 2023) demuestran que el contacto visual y la presencia física activan la <strong>oxitocina</strong> — la hormona de la confianza — hasta un 40% más que las interacciones digitales, facilitando la construcción de relaciones duraderas.</p>
+                    </div>
+                </div>
+
+                <div class="quote quote-blue fu d3">
+                    <p>El servicio cara a cara no es solo una transacción: es el momento de verdad donde se construye o destruye la relación con el cliente.</p>
+                    <div class="q-author">— Philip Kotler & Kevin Keller</div>
+                    <div class="q-src">Marketing Management, 16ª edición, 2023</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card card-dark fu d4" style="margin-bottom:16px">
+                    <div class="c-icon ci-dark">📊</div>
+                    <div class="c-title">Datos Clave</div>
+                    <ul class="c-list">
+                        <li><strong>86%</strong> de clientes pagan más por mejor experiencia presencial</li>
+                        <li><strong>73%</strong> considera la experiencia como factor decisivo de compra</li>
+                        <li><strong>92%</strong> confía más en recomendaciones personales que en publicidad</li>
+                        <li>Basado en <strong>prestezas</strong>: atributos esenciales medibles</li>
+                    </ul>
+                    <div class="note" style="margin-top:14px">
+                        <span class="note-icon">💡</span>
+                        <span>Fuentes: PwC Customer Experience Report 2023, Nielsen Trust Study 2024</span>
+                    </div>
+                </div>
+                <div class="imp-box imp-box-dark fu d5">
+                    <div class="imp-title">🔑 Concepto Clave: Prestezas</div>
+                    <p class="imp-text">Son los atributos esenciales que debe poseer un profesional de servicio al cliente. Representan la disposición, actitud y habilidad para atender con excelencia. Se agrupan en 6 dimensiones fundamentales que estudiaremos a continuación.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 4: POR QUÉ IMPORTA ===================== -->
+<div class="slide bg-light" data-slide="4">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-blue">Módulo 1 · Contexto</div>
+            <h2 class="s-title s-title-dark">¿Por Qué Sigue Siendo <span class="hl3">Insustituible</span>?</h2>
+            <p class="s-desc">En una era digital, la atención presencial no solo sobrevive: se vuelve un diferenciador competitivo más valioso que nunca.</p>
+        </div>
+
+        <div class="stats-grid fu d1">
+            <div class="stat">
+                <div class="stat-num sn-b">86%</div>
+                <div class="stat-label">Pagan más por mejor experiencia</div>
+                <div class="stat-src">PwC, 2023</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num sn-g">3.5x</div>
+                <div class="stat-label">Más impacto que canales digitales</div>
+                <div class="stat-src">McKinsey, 2024</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num sn-o">-25%</div>
+                <div class="stat-label">Reducción de abandono (churn)</div>
+                <div class="stat-src">Gartner, 2025</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num sn-v">+140%</div>
+                <div class="stat-label">Más compras por satisfacción</div>
+                <div class="stat-src">HBR, 2023</div>
+            </div>
+        </div>
+
+        <div class="compare fu d3">
+            <div class="comp-box comp-bad">
+                <div class="comp-title">❌ Sin Estrategia</div>
+                <ul class="comp-list">
+                    <li>❌ Atención improvisada e inconsistente</li>
+                    <li>❌ Alta rotación de clientes (churn)</li>
+                    <li>❌ Quejas recurrentes sin solución</li>
+                    <li>❌ Personal desmotivado y sin guía</li>
+                    <li>❌ Pérdida de mercado ante competidores</li>
+                </ul>
+            </div>
+            <div class="comp-vs">VS</div>
+            <div class="comp-box comp-good">
+                <div class="comp-title">✅ Con Estrategia</div>
+                <ul class="comp-list">
+                    <li>✅ Experiencia predecible y de calidad</li>
+                    <li>✅ Clientes leales que recomiendan</li>
+                    <li>✅ Resolución proactiva de problemas</li>
+                    <li>✅ Equipo empoderado y comprometido</li>
+                    <li>✅ Ventaja competitiva sostenible</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="imp-box fu d5">
+            <div class="imp-title">📌 Dato Importante</div>
+            <p class="imp-text">Según <strong>Bain & Company (2024)</strong>, aumentar la retención de clientes en solo un <strong>5%</strong> puede incrementar las ganancias entre un <strong>25% y 95%</strong>. La atención cara a cara es el canal con mayor tasa de retención comprobada en industrias de servicios.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 5: PRESTEZAS 1-3 ===================== -->
+<div class="slide bg-dark" data-slide="5">
+    <div class="deco-circle deco-1"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 2 · Las 6 Prestezas</div>
+            <h2 class="s-title s-title-light">Respeto, Sonrisa y <span class="hl">Conversación</span></h2>
+            <p class="s-desc s-desc-light">Las tres primeras prestezas establecen la base emocional de toda interacción exitosa con el cliente.</p>
+        </div>
+
+        <div class="grid g3">
+            <div class="card card-dark fu d1">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0">🙏</div>
+                    <div>
+                        <span class="badge b-blue" style="margin-bottom:4px;display:block">Presteza 1</span>
+                        <div class="c-title" style="margin-bottom:0">Respeto Auténtico</div>
+                    </div>
+                </div>
+                <p class="c-text" style="margin-bottom:12px">El respeto no es cortesía superficial: es reconocer al cliente como persona única con necesidades legítimas. Según Kotler, es el <strong>fundamento no negociable</strong> de todo servicio de calidad.</p>
+                <ul class="c-list">
+                    <li>Usa el <strong>nombre</strong> del cliente siempre que sea posible</li>
+                    <li>Mantén <strong>contacto visual</strong> sin intimidar</li>
+                    <li>Valida sus preocupaciones: <em>"Entiendo perfectamente su situación"</em></li>
+                    <li>Jamás interrumpas cuando habla</li>
+                    <li>Adapta tu lenguaje a su nivel, sin condescender</li>
+                </ul>
+                <div class="sc-result" style="margin-top:14px">🎯 Resultado: Genera valor percibido y establece igualdad en la relación</div>
+            </div>
+
+            <div class="card card-dark fu d2">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0">😊</div>
+                    <div>
+                        <span class="badge b-green" style="margin-bottom:4px;display:block">Presteza 2</span>
+                        <div class="c-title" style="margin-bottom:0">Sonrisa Genuina</div>
+                    </div>
+                </div>
+                <p class="c-text" style="margin-bottom:12px">La investigación de <strong>Carmine Gallo (2023)</strong> demostró que una sonrisa genuina (Duchenne) activa las neuronas espejo del receptor, aumentando la empatía percibida entre un <strong>20-30%</strong>.</p>
+                <ul class="c-list">
+                    <li>Debe ser <strong>natural</strong>, no forzada ni mecánica</li>
+                    <li>La sonrisa Duchenne involucra ojos y boca</li>
+                    <li>Transmite <strong>apertura y disposición</strong> genuina</li>
+                    <li>Reduce la tensión en situaciones difíciles</li>
+                    <li>Es contagiosa: el cliente responde sonriendo</li>
+                </ul>
+                <div class="sc-result" style="margin-top:14px">📊 +20-30% empatía percibida (Gallo, The Communication Skills, 2023)</div>
+            </div>
+
+            <div class="card card-dark fu d3">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0">💬</div>
+                    <div>
+                        <span class="badge b-orange" style="margin-bottom:4px;display:block">Presteza 3</span>
+                        <div class="c-title" style="margin-bottom:0">Conversación Adaptada</div>
+                    </div>
+                </div>
+                <p class="c-text" style="margin-bottom:12px">La comunicación efectiva requiere adaptación cultural y contextual. No existe un guion universal: cada mercado, región y persona demanda un enfoque conversacional único.</p>
+                <ul class="c-list">
+                    <li>Regla <strong>70/30</strong>: 70% escuchar, 30% hablar</li>
+                    <li>Adapta a <strong>cultura local</strong> (ej: calidez en Colombia 🇨🇴)</li>
+                    <li>Haz preguntas abiertas: <em>"¿Cómo puedo ayudarle mejor?"</em></li>
+                    <li>Parafrasea para confirmar comprensión</li>
+                    <li>Evita jerga técnica salvo que el cliente la use primero</li>
+                </ul>
+                <div class="sc-result" style="margin-top:14px">🔗 Genera conexión efectiva y reduce malentendidos en un 45%</div>
+            </div>
+        </div>
+
+        <div class="scenario scenario-dark fu d5" style="margin-top:20px">
+            <div class="sc-header">
+                <span class="sc-badge sc-badge-case">📝 Caso Práctico</span>
+                <span class="sc-title">Aplicando las 3 primeras prestezas</span>
+            </div>
+            <p class="sc-text">Un cliente entra a una tienda buscando un producto específico. El vendedor lo recibe con <strong>contacto visual y sonrisa genuina</strong> (Presteza 2), lo saluda por su nombre al revisar la tarjeta de fidelización (Presteza 1), y en lugar de recitar características, le pregunta: <em>"¿Para qué ocasión lo necesita?"</em> (Presteza 3). El resultado: una venta 35% superior al ticket promedio porque se identificaron necesidades adicionales.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 6: PRESTEZAS 4-6 ===================== -->
+<div class="slide bg-light" data-slide="6">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-green">Módulo 2 · Las 6 Prestezas</div>
+            <h2 class="s-title s-title-dark">Ayuda, Calma y <span class="hl2">Equidad</span></h2>
+            <p class="s-desc">Las prestezas avanzadas que marcan la diferencia en situaciones complejas y clientes difíciles.</p>
+        </div>
+
+        <div class="grid g3">
+            <div class="card card-accent fu d1">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-t" style="margin-bottom:0">🤲</div>
+                    <div>
+                        <span class="badge b-green" style="margin-bottom:4px;display:block">Presteza 4</span>
+                        <div class="c-title" style="margin-bottom:0">Ayuda Proactiva</div>
+                    </div>
+                </div>
+                <p class="c-text" style="margin-bottom:12px">No esperes a que el cliente pida ayuda: <strong>anticípate</strong>. La proactividad demuestra compromiso genuino y convierte problemas potenciales en oportunidades de fidelización.</p>
+                <ul class="c-list c-list-check">
+                    <li>Anticipa necesidades <strong>antes</strong> de que pregunten</li>
+                    <li>Usa frases como: <em>"¿En qué más puedo ayudarte?"</em></li>
+                    <li>Ofrece soluciones completas, no solo respuestas parciales</li>
+                    <li>Observa señales no verbales de confusión o frustración</li>
+                    <li>Guía al cliente paso a paso en procesos complejos</li>
+                </ul>
+                <div class="note"><span class="note-icon">📊</span><span>Según Zendesk (2025), la ayuda proactiva reduce escalaciones en un 37%</span></div>
+            </div>
+
+            <div class="card card-accent-o fu d2">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-b" style="margin-bottom:0">😌</div>
+                    <div>
+                        <span class="badge b-blue" style="margin-bottom:4px;display:block">Presteza 5</span>
+                        <div class="c-title" style="margin-bottom:0">Mantener la Calma</div>
+                    </div>
+                </div>
+                <p class="c-text" style="margin-bottom:12px">En momentos de presión, tu calma es tu mayor fortaleza. Un profesional que mantiene la serenidad transmite <strong>competencia y seguridad</strong>, desescalando conflictos naturalmente.</p>
+                <ul class="c-list c-list-check">
+                    <li>Responde con <strong>empatía</strong>, nunca con reacción emocional</li>
+                    <li><strong>Técnica de 3 segundos:</strong> pausa antes de responder</li>
+                    <li>Reconoce la emoción del cliente: <em>"Entiendo su frustración"</em></li>
+                    <li>Separa la persona del problema</li>
+                    <li>Usa tono de voz bajo y pausado en conflictos</li>
+                </ul>
+                <div class="note"><span class="note-icon">🧠</span><span>La respiración diafragmática reduce cortisol (estrés) en 30 segundos — APA, 2024</span></div>
+            </div>
+
+            <div class="card card-accent-v fu d3">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-v" style="margin-bottom:0">⚖️</div>
+                    <div>
+                        <span class="badge b-purple" style="margin-bottom:4px;display:block">Presteza 6</span>
+                        <div class="c-title" style="margin-bottom:0">Equidad Total</div>
+                    </div>
+                </div>
+                <p class="c-text" style="margin-bottom:12px">Todos los clientes merecen el mismo nivel de excelencia. La equidad no significa tratar a todos igual, sino dar a cada uno lo que necesita <strong>sin favoritismos ni prejuicios</strong>.</p>
+                <ul class="c-list c-list-check">
+                    <li>Usa <strong>"Te sugiero..."</strong> en lugar de dar órdenes</li>
+                    <li>Mismo estándar de excelencia para <strong>todos</strong></li>
+                    <li>No juzgues por apariencia, edad o género</li>
+                    <li>Evita privilegios no merecidos (destruyen confianza)</li>
+                    <li>Sé transparente en políticas y procesos</li>
+                </ul>
+                <div class="note"><span class="note-icon">⚠️</span><span>El 68% de clientes abandonan marcas si perciben trato desigual — Accenture, 2024</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 7: RESUMEN PRESTEZAS ===================== -->
+<div class="slide bg-dark" data-slide="7">
+    <div class="deco-circle deco-2"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 2 · Síntesis</div>
+            <h2 class="s-title s-title-light">Las 6 Prestezas: <span class="hl4">Visión Integral</span></h2>
+            <p class="s-desc s-desc-light">Cómo se conectan las prestezas para crear una experiencia de servicio completa y memorable.</p>
+        </div>
+
+        <div class="process fu d1">
+            <div class="proc-step proc-step-dark">
+                <div class="proc-num">01</div>
+                <div class="proc-title" style="color:var(--w)">Respeto</div>
+                <p class="proc-text">Base de toda relación. Reconoce la dignidad del cliente.</p>
+            </div>
+            <div class="proc-step proc-step-dark">
+                <div class="proc-num">02</div>
+                <div class="proc-title" style="color:var(--w)">Sonrisa</div>
+                <p class="proc-text">Puerta emocional. Genera conexión instantánea.</p>
+            </div>
+            <div class="proc-step proc-step-dark">
+                <div class="proc-num">03</div>
+                <div class="proc-title" style="color:var(--w)">Conversación</div>
+                <p class="proc-text">Canal de entendimiento. Escucha activa 70/30.</p>
+            </div>
+            <div class="proc-step proc-step-dark">
+                <div class="proc-num">04</div>
+                <div class="proc-title" style="color:var(--w)">Ayuda</div>
+                <p class="proc-text">Proactividad. Anticipa y resuelve necesidades.</p>
+            </div>
+            <div class="proc-step proc-step-dark">
+                <div class="proc-num">05</div>
+                <div class="proc-title" style="color:var(--w)">Calma</div>
+                <p class="proc-text">Control emocional. Desescala conflictos.</p>
+            </div>
+            <div class="proc-step proc-step-dark">
+                <div class="proc-num">06</div>
+                <div class="proc-title" style="color:var(--w)">Equidad</div>
+                <p class="proc-text">Justicia. Sin favoritismos ni prejuicios.</p>
+            </div>
+        </div>
+
+        <div class="two-col fu d3">
+            <div class="scenario scenario-dark">
+                <div class="sc-header">
+                    <span class="sc-badge sc-badge-tip">✅ Buena Práctica</span>
+                </div>
+                <p class="sc-text"><em>"Señora María, <strong>bienvenida</strong>. Noto que busca algo específico, ¿me permite ayudarle? <strong>Le sugiero</strong> esta opción que otros clientes con necesidades similares han encontrado excelente."</em></p>
+                <div class="sc-result">Aplica: Respeto (nombre) + Sonrisa + Ayuda proactiva + Equidad (sugerir, no ordenar)</div>
+            </div>
+            <div class="scenario scenario-dark">
+                <div class="sc-header">
+                    <span class="sc-badge sc-badge-warn">❌ Mala Práctica</span>
+                </div>
+                <p class="sc-text"><em>"Eso no es así. <strong>Tiene que</strong> llenar este formulario primero. <strong>No sé</strong> por qué no leyó las instrucciones antes de venir. El siguiente, por favor."</em></p>
+                <div class="sc-result" style="background:rgba(239,68,68,0.1);color:var(--r)">Viola: Respeto (impersonal) + Calma (irritación) + Equidad (ordena) + Ayuda (no proactiva)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 8: ESTRATEGIAS - POR QUÉ ===================== -->
+<div class="slide bg-light" data-slide="8">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-blue">Módulo 3 · Estrategias</div>
+            <h2 class="s-title s-title-dark">¿Por Qué Diseñar <span class="hl3">Estrategias</span> de Servicio?</h2>
+            <p class="s-desc">Las prestezas son la actitud individual; las estrategias son el sistema organizacional que las hace sostenibles y escalables.</p>
+        </div>
+
+        <div class="triada fu d1">
+            <div class="tri-item">
+                <div class="tri-icon">🧲</div>
+                <div class="tri-h">ATRAE</div>
+                <p class="tri-p">Nuevos clientes mediante reputación de servicio excepcional</p>
+            </div>
+            <div class="tri-arrow">→</div>
+            <div class="tri-item">
+                <div class="tri-icon">✅</div>
+                <div class="tri-h">SATISFACE</div>
+                <p class="tri-p">Necesidades actuales con procesos estandarizados de calidad</p>
+            </div>
+            <div class="tri-arrow">→</div>
+            <div class="tri-item">
+                <div class="tri-icon">🔒</div>
+                <div class="tri-h">FIDELIZA</div>
+                <p class="tri-p">Crea barreras emocionales de salida frente a la competencia</p>
+            </div>
+        </div>
+
+        <div class="grid g2 fu d3">
+            <div class="card">
+                <div class="c-icon ci-b">🏢</div>
+                <div class="c-title">Impacto Organizacional</div>
+                <ul class="c-list c-list-check">
+                    <li>Estandariza la calidad: <strong>no depende de personas, sino de sistemas</strong></li>
+                    <li>Reduce costos de adquisición: retener es <strong>5-7x más barato</strong> que adquirir (HBR, 2023)</li>
+                    <li>Aumenta el Customer Lifetime Value (CLV) hasta <strong>306%</strong></li>
+                    <li>Genera diferenciación frente a competidores con productos similares</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="c-icon ci-g">📈</div>
+                <div class="c-title">Impacto Financiero</div>
+                <ul class="c-list c-list-check">
+                    <li>Clientes leales gastan <strong>67% más</strong> que nuevos clientes</li>
+                    <li>Reducción de churn del <strong>25%</strong> (Gartner, 2025)</li>
+                    <li>NPS alto correlaciona con <strong>crecimiento de ingresos 2x</strong></li>
+                    <li>El <strong>73%</strong> de consumidores prioriza experiencia sobre precio</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 9: ELEMENTOS CLAVE 1/2 ===================== -->
+<div class="slide bg-dark" data-slide="9">
+    <div class="deco-circle deco-3"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 3 · Diseño Estratégico</div>
+            <h2 class="s-title s-title-light">Elementos Clave para <span class="hl">Diseñar</span> tu Estrategia</h2>
+            <p class="s-desc s-desc-light">Cuatro preguntas fundamentales que toda organización debe responder antes de implementar.</p>
+        </div>
+
+        <div class="grid g2" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="card card-dark fu d1">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0;font-size:20px">📦</div>
+                    <div class="c-title" style="margin-bottom:0">1. ¿QUÉ ofrecer?</div>
+                </div>
+                <ul class="c-list">
+                    <li>Servicios <strong>personalizados</strong> según segmento de cliente</li>
+                    <li>Disponibilidad extendida o <strong>24/7</strong> según demanda</li>
+                    <li>Soluciones proactivas que anticipen necesidades</li>
+                    <li>Paquetes de valor que integren producto + servicio</li>
+                </ul>
+                <div class="imp-box imp-box-dark" style="margin-top:12px">
+                    <div class="imp-title">💡 Ejemplo</div>
+                    <p class="imp-text">Un banco que ofrece asesoría financiera personalizada además de productos estándar reportó <strong>+45%</strong> en satisfacción (Deloitte, 2024).</p>
+                </div>
+            </div>
+
+            <div class="card card-dark fu d2">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0;font-size:20px">👤</div>
+                    <div class="c-title" style="margin-bottom:0">2. ¿QUIÉN lo ofrece?</div>
+                </div>
+                <ul class="c-list">
+                    <li>Personal <strong>capacitado continuamente</strong> (no solo inducción)</li>
+                    <li>Empoderado para <strong>tomar decisiones</strong> autónomas</li>
+                    <li>Con <strong>inteligencia emocional</strong> desarrollada y medible</li>
+                    <li>Alineado con valores y cultura de servicio</li>
+                </ul>
+                <div class="imp-box imp-box-dark" style="margin-top:12px">
+                    <div class="imp-title">💡 Ejemplo</div>
+                    <p class="imp-text">Ritz-Carlton autoriza a cada empleado gastar hasta <strong>$2,000 USD</strong> por huésped para resolver problemas sin pedir permiso.</p>
+                </div>
+            </div>
+
+            <div class="card card-dark fu d3">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0;font-size:20px">⚙️</div>
+                    <div class="c-title" style="margin-bottom:0">3. ¿CÓMO entregarlo?</div>
+                </div>
+                <ul class="c-list">
+                    <li>Enfoque <strong>omnicanal</strong>: presencial + digital integrados</li>
+                    <li>Atención a clientes <strong>externos e internos</strong></li>
+                    <li>Protocolos estandarizados con flexibilidad personal</li>
+                    <li>Coherencia en todos los puntos de contacto</li>
+                </ul>
+                <div class="imp-box imp-box-dark" style="margin-top:12px">
+                    <div class="imp-title">💡 Ejemplo</div>
+                    <p class="imp-text">Disney capacita con "cast members" que siguen guiones pero improvisan según la situación. Resultado: <strong>NPS de 82</strong>.</p>
+                </div>
+            </div>
+
+            <div class="card card-dark fu d4">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div class="c-icon ci-dark" style="margin-bottom:0;font-size:20px">🔍</div>
+                    <div class="c-title" style="margin-bottom:0">4. ¿Contra QUIÉN competimos?</div>
+                </div>
+                <ul class="c-list">
+                    <li>Análisis <strong>SWOT</strong> periódico del servicio (trimestral)</li>
+                    <li><strong>Benchmarking</strong> con líderes del sector y cross-industry</li>
+                    <li>Mystery shopping para evaluar competencia</li>
+                    <li>Identifica gaps y oportunidades de diferenciación</li>
+                </ul>
+                <div class="imp-box imp-box-dark" style="margin-top:12px">
+                    <div class="imp-title">💡 SWOT</div>
+                    <p class="imp-text"><strong>S</strong>trengths (Fortalezas), <strong>W</strong>eaknesses (Debilidades), <strong>O</strong>pportunities (Oportunidades), <strong>T</strong>hreats (Amenazas).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 10: ELEMENTOS CLAVE 2/2 ===================== -->
+<div class="slide bg-light" data-slide="10">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-blue">Módulo 3 · Medición</div>
+            <h2 class="s-title s-title-dark">Métricas, Influencia y <span class="hl">KPIs</span></h2>
+            <p class="s-desc">Lo que no se mide, no se mejora. Herramientas para evaluar y optimizar tu estrategia de servicio.</p>
+        </div>
+
+        <div class="meter-row fu d1">
+            <div class="meter">
+                <div class="meter-circle" style="--val:78%"><span class="meter-val">78</span></div>
+                <div class="meter-label">NPS Score</div>
+            </div>
+            <div class="meter">
+                <div class="meter-circle" style="--val:92%"><span class="meter-val">92%</span></div>
+                <div class="meter-label">CSAT</div>
+            </div>
+            <div class="meter">
+                <div class="meter-circle" style="--val:85%"><span class="meter-val">85%</span></div>
+                <div class="meter-label">CES</div>
+            </div>
+            <div class="meter">
+                <div class="meter-circle" style="--val:94%"><span class="meter-val">94%</span></div>
+                <div class="meter-label">FCR</div>
+            </div>
+        </div>
+
+        <div class="grid g3 fu d2">
+            <div class="card card-accent">
+                <div class="c-title">📏 NPS — Net Promoter Score</div>
+                <p class="c-text" style="margin-bottom:8px">Mide la <strong>lealtad</strong> del cliente con una pregunta: "¿Recomendarías nuestra empresa?" Escala 0-10.</p>
+                <ul class="c-list" style="font-size:12px">
+                    <li><strong>Promotores (9-10):</strong> Clientes leales que recomiendan</li>
+                    <li><strong>Pasivos (7-8):</strong> Satisfechos pero vulnerables</li>
+                    <li><strong>Detractores (0-6):</strong> Insatisfechos, riesgo de churn</li>
+                </ul>
+                <div class="note"><span class="note-icon">📊</span><span>NPS &gt; 50 = excelente | NPS &gt; 70 = clase mundial (Bain, 2024)</span></div>
+            </div>
+            <div class="card card-accent-g">
+                <div class="c-title">😊 CSAT — Customer Satisfaction</div>
+                <p class="c-text" style="margin-bottom:8px">Mide la <strong>satisfacción</strong> inmediata después de cada interacción específica. Escala 1-5 o 1-10.</p>
+                <ul class="c-list" style="font-size:12px">
+                    <li>Se aplica justo después de la interacción</li>
+                    <li>Ideal para evaluar puntos de contacto específicos</li>
+                    <li>Permite identificar problemas rápidamente</li>
+                </ul>
+                <div class="note"><span class="note-icon">🎯</span><span>CSAT promedio global: 75-85% | Meta: &gt;90% (Zendesk, 2025)</span></div>
+            </div>
+            <div class="card card-accent-o">
+                <div class="c-title">⚡ CES — Customer Effort Score</div>
+                <p class="c-text" style="margin-bottom:8px">Mide qué tan <strong>fácil</strong> fue para el cliente resolver su necesidad. A menor esfuerzo, mayor fidelidad.</p>
+                <ul class="c-list" style="font-size:12px">
+                    <li>"¿Qué tan fácil fue resolver su consulta?"</li>
+                    <li>Mejor predictor de recompra que CSAT</li>
+                    <li>96% de clientes con alto esfuerzo se van (Gartner)</li>
+                </ul>
+                <div class="note"><span class="note-icon">⚠️</span><span>El esfuerzo es el mayor destructor de lealtad — CEB/Gartner, 2025</span></div>
+            </div>
+        </div>
+
+        <div class="imp-box fu d5">
+            <div class="imp-title">📌 KPIs Adicionales Recomendados</div>
+            <p class="imp-text"><strong>ROI del servicio</strong> • <strong>Tiempo promedio de respuesta</strong> (meta: &lt;2 min presencial) • <strong>FCR</strong> (First Contact Resolution: meta &gt;80%) • <strong>Costo por contacto vs. CLV</strong> • <strong>Tasa de retención mensual</strong> • <strong>Testimonios y casos de éxito</strong> (ej: -40% quejas)</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 11: VALOR AGREGADO ===================== -->
+<div class="slide bg-dark" data-slide="11">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 4 · Diferenciación</div>
+            <h2 class="s-title s-title-light">Valor Agregado: <span class="hl3">La Diferencia</span> que Enamora</h2>
+            <p class="s-desc s-desc-light">La línea entre un cliente satisfecho y un promotor fanático está en lo que haces MÁS ALLÁ de lo esperado.</p>
+        </div>
+
+        <div class="quote quote-green fu d1">
+            <p>"Valor agregado es hacer más de lo solicitado o pagado. Es poner corazón en cada interacción y anticipar dos pasos adelante lo que el cliente necesitará."</p>
+            <div class="q-author">— Principio de Servicio Excepcional</div>
+        </div>
+
+        <div style="text-align:center;margin:20px 0" class="fu d2">
+            <span style="font-size:64px;display:inline-block" class="heartbeat">❤️</span>
+        </div>
+
+        <div class="grid g2" style="grid-template-columns:1fr 1fr;">
+            <div class="card card-dark fu d3">
+                <div class="c-icon ci-dark">🎯</div>
+                <div class="c-title">Estrategias de Valor Agregado</div>
+                <ul class="c-list">
+                    <li><strong>Descuento sorpresa</strong> por lealtad sin que lo pida</li>
+                    <li><strong>Seguimiento post-venta:</strong> llamada a los 3 días</li>
+                    <li><strong>Recordatorios útiles</strong> personalizados (mantenimiento, renovación)</li>
+                    <li><strong>Contenido educativo</strong> gratuito sobre el producto</li>
+                    <li><strong>Empaque especial</strong> en fechas importantes del cliente</li>
+                    <li><strong>Resolución anticipada:</strong> detectar problemas antes que ocurran</li>
+                </ul>
+            </div>
+            <div>
+                <div class="stats-grid fu d4" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
+                    <div class="stat stat-dark">
+                        <div class="stat-num sn-g">64%</div>
+                        <div class="stat-label">Se vuelven promotores activos</div>
+                        <div class="stat-src">Zendesk, 2025</div>
+                    </div>
+                    <div class="stat stat-dark">
+                        <div class="stat-num sn-o">4.2x</div>
+                        <div class="stat-label">Más reseñas positivas</div>
+                        <div class="stat-src">BrightLocal, 2024</div>
+                    </div>
+                    <div class="stat stat-dark">
+                        <div class="stat-num sn-b">+67%</div>
+                        <div class="stat-label">Mayor frecuencia de compra</div>
+                        <div class="stat-src">Forbes, 2024</div>
+                    </div>
+                    <div class="stat stat-dark">
+                        <div class="stat-num sn-v">82%</div>
+                        <div class="stat-label">Recomiendan a familiares</div>
+                        <div class="stat-src">Nielsen, 2024</div>
+                    </div>
+                </div>
+                <div class="scenario scenario-dark fu d5">
+                    <div class="sc-header"><span class="sc-badge sc-badge-case">📝 Caso Real</span></div>
+                    <p class="sc-text">Una cadena hotelera en Colombia implementó <strong>notas escritas a mano</strong> de bienvenida personalizadas y un pequeño obsequio local para huéspedes frecuentes. Resultado: <strong>+52% en reseñas 5 estrellas</strong> y <strong>+38% en tasa de retorno</strong> en 6 meses.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 12: CRM INTRO ===================== -->
+<div class="slide bg-light" data-slide="12">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-blue">Módulo 5 · Tecnología</div>
+            <h2 class="s-title s-title-dark">¿Qué es <span class="hl4">CRM</span>? Customer Relationship Management</h2>
+            <p class="s-desc">La tecnología que potencia la atención personalizada al centralizar toda la información del cliente en un solo lugar.</p>
+        </div>
+
+        <div class="quote quote-blue fu d1">
+            <p>CRM es una estrategia integral para entender, anticipar y satisfacer las necesidades del cliente a lo largo de todo su ciclo de vida, creciendo el valor relacional mediante datos 360° y marketing relacional.</p>
+            <div class="q-author">— Definición Integrada</div>
+            <div class="q-src">Kotler (2023) + Salesforce Research (2024)</div>
+        </div>
+
+        <div class="grid g2 fu d2">
+            <div class="card">
+                <div class="c-icon ci-v">🎯</div>
+                <div class="c-title">Objetivos del CRM</div>
+                <ol class="num-list">
+                    <li>Centralizar información <strong>360°</strong> de cada cliente: historial, preferencias, interacciones</li>
+                    <li>Crecer el <strong>valor relacional</strong>: de transaccional a relación de largo plazo</li>
+                    <li><strong>Automatizar</strong> comunicaciones personalizadas sin perder calidez</li>
+                    <li>Optimizar procesos de <strong>venta, servicio y marketing</strong> simultáneamente</li>
+                    <li>Generar <strong>insights predictivos</strong> para anticipar necesidades del cliente</li>
+                </ol>
+            </div>
+            <div>
+                <div class="card" style="margin-bottom:16px">
+                    <div class="c-icon ci-b">💡</div>
+                    <div class="c-title">Filosofía CRM</div>
+                    <p class="c-text" style="margin-bottom:12px">El CRM va más allá del software: es un <strong>cambio de mentalidad</strong> organizacional.</p>
+                    <div class="compare" style="grid-template-columns:1fr auto 1fr;gap:10px;margin:0">
+                        <div class="comp-box comp-bad" style="padding:16px">
+                            <div class="comp-title" style="font-size:13px">Marketing Transaccional</div>
+                            <p style="font-size:11px;color:var(--d3)">Vender una vez, buscar otro cliente</p>
+                        </div>
+                        <div class="comp-vs" style="font-size:16px">→</div>
+                        <div class="comp-box comp-good" style="padding:16px">
+                            <div class="comp-title" style="font-size:13px">Marketing Relacional</div>
+                            <p style="font-size:11px;color:var(--d3)">Construir relaciones de por vida</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="imp-box">
+                    <div class="imp-title">🔑 Integración con Servicio Cara a Cara</div>
+                    <p class="imp-text">El CRM alimenta al personal presencial con <strong>datos del cliente antes de la interacción</strong>: historial de compras, preferencias, quejas previas. Esto permite una atención personalizada basada en datos, no en suposiciones.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 13: HERRAMIENTAS CRM ===================== -->
+<div class="slide bg-dark" data-slide="13">
+    <div class="deco-circle deco-1"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 5 · Herramientas</div>
+            <h2 class="s-title s-title-light">Herramientas CRM <span class="hl">Líderes</span> del Mercado</h2>
+            <p class="s-desc s-desc-light">Comparativa de las principales plataformas según tamaño de empresa, presupuesto y necesidades.</p>
+        </div>
+
+        <div class="grid g3 fu d1">
+            <div class="card card-dark">
+                <div style="text-align:center;margin-bottom:16px">
+                    <span style="font-size:48px">☁️</span>
+                    <h3 class="c-title" style="margin-top:8px">Salesforce</h3>
+                    <span class="badge b-blue">Empresarial</span>
+                </div>
+                <ul class="c-list">
+                    <li>Solución más completa del mercado</li>
+                    <li>IA integrada (Einstein AI) para predicciones</li>
+                    <li>+3,000 integraciones disponibles</li>
+                    <li>Ideal para empresas medianas-grandes</li>
+                    <li>Curva de aprendizaje alta</li>
+                </ul>
+                <p class="c-text" style="margin-top:10px"><strong>Precio:</strong> desde $25 USD/usuario/mes</p>
+                <p class="c-text"><strong>Cuota mercado:</strong> 23.8% global (IDC, 2024)</p>
+            </div>
+            <div class="card card-dark">
+                <div style="text-align:center;margin-bottom:16px">
+                    <span style="font-size:48px">🟠</span>
+                    <h3 class="c-title" style="margin-top:8px">HubSpot</h3>
+                    <span class="badge b-green">PYMES</span>
+                </div>
+                <ul class="c-list">
+                    <li>CRM gratuito con funciones robustas</li>
+                    <li>Interfaz intuitiva y fácil adopción</li>
+                    <li>Marketing + Ventas + Servicio integrado</li>
+                    <li>Ideal para PYMES y startups</li>
+                    <li>Excelente academia de capacitación</li>
+                </ul>
+                <p class="c-text" style="margin-top:10px"><strong>Precio:</strong> CRM gratis / Premium desde $45/mes</p>
+                <p class="c-text"><strong>Usuarios:</strong> +194,000 empresas (HubSpot, 2024)</p>
+            </div>
+            <div class="card card-dark">
+                <div style="text-align:center;margin-bottom:16px">
+                    <span style="font-size:48px">🔴</span>
+                    <h3 class="c-title" style="margin-top:8px">Zoho CRM</h3>
+                    <span class="badge b-orange">Económico</span>
+                </div>
+                <ul class="c-list">
+                    <li>Mejor relación costo-beneficio</li>
+                    <li>Suite completa: CRM + ERP + Oficina</li>
+                    <li>IA integrada (Zia) para automatización</li>
+                    <li>Ideal para Latinoamérica (precio accesible)</li>
+                    <li>Personalización avanzada sin código</li>
+                </ul>
+                <p class="c-text" style="margin-top:10px"><strong>Precio:</strong> desde $14 USD/usuario/mes</p>
+                <p class="c-text"><strong>Usuarios:</strong> +250,000 empresas (Zoho, 2024)</p>
+            </div>
+        </div>
+
+        <div class="imp-box imp-box-dark fu d4">
+            <div class="imp-title">📌 ¿Cómo Elegir?</div>
+            <p class="imp-text">Considera: <strong>tamaño del equipo</strong> (Zoho &lt;50, HubSpot 50-200, Salesforce 200+) • <strong>presupuesto</strong> • <strong>complejidad de procesos</strong> • <strong>integraciones necesarias</strong> • <strong>curva de aprendizaje aceptable</strong> • <strong>soporte en español</strong>. Siempre prueba la versión gratuita antes de invertir.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 14: 10 COMPONENTES CRM ===================== -->
+<div class="slide bg-light" data-slide="14">
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-blue">Módulo 5 · Componentes</div>
+            <h2 class="s-title s-title-dark">Los <span class="hl">10 Componentes</span> Clave de un CRM</h2>
+            <p class="s-desc">Cada componente aporta una pieza esencial para la gestión integral de la relación con el cliente.</p>
+        </div>
+
+        <div class="grid g2" style="grid-template-columns:1fr 1fr;" class="fu d1">
+            <table class="s-table fu d1">
+                <thead><tr><th>#</th><th>Componente</th><th>Función</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="t-num">1</span></td><td><strong>Gestión de Ventas</strong></td><td>Pipeline visual, pronósticos y seguimiento de leads</td></tr>
+                    <tr><td><span class="t-num">2</span></td><td><strong>Admin. de Clientes</strong></td><td>Base de datos centralizada 360° con historial completo</td></tr>
+                    <tr><td><span class="t-num">3</span></td><td><strong>Servicio al Cliente</strong></td><td>Tickets, SLAs, base de conocimientos y escalaciones</td></tr>
+                    <tr><td><span class="t-num">4</span></td><td><strong>Manejo de Tiempo</strong></td><td>Calendarios sincronizados y recordatorios automáticos</td></tr>
+                    <tr><td><span class="t-num">5</span></td><td><strong>Telemarketing</strong></td><td>Integración telefónica, scripts y grabación de llamadas</td></tr>
+                </tbody>
+            </table>
+            <table class="s-table fu d2">
+                <thead><tr><th>#</th><th>Componente</th><th>Función</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="t-num t-num-g">6</span></td><td><strong>E-commerce</strong></td><td>Sincronización tienda online y tracking de comportamiento</td></tr>
+                    <tr><td><span class="t-num t-num-g">7</span></td><td><strong>Servicio en Campo</strong></td><td>Gestión de técnicos, GPS, órdenes de servicio móviles</td></tr>
+                    <tr><td><span class="t-num t-num-g">8</span></td><td><strong>Info. Ejecutiva</strong></td><td>Dashboards en tiempo real, reportes automatizados</td></tr>
+                    <tr><td><span class="t-num t-num-g">9</span></td><td><strong>Integración ERP</strong></td><td>Conexión con sistemas financieros, inventario y facturación</td></tr>
+                    <tr><td><span class="t-num t-num-g">10</span></td><td><strong>Sincronización</strong></td><td>Datos unificados: email, chat, RRSS, teléfono</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="results fu d4">
+            <div class="res-item">
+                <div class="res-num">+29%</div>
+                <div class="res-label">En Ventas</div>
+            </div>
+            <div class="res-item">
+                <div class="res-num">-34%</div>
+                <div class="res-label">Ciclo de Venta</div>
+            </div>
+            <div class="res-item">
+                <div class="res-num">+42%</div>
+                <div class="res-label">Tasa Conversión</div>
+            </div>
+            <div class="res-item">
+                <div class="res-num">$8.71</div>
+                <div class="res-label">ROI por cada $1</div>
+            </div>
+        </div>
+
+        <div class="note fu d5"><span class="note-icon">📊</span><span>Datos de impacto según <strong>Nucleus Research (2024)</strong>: "CRM delivers an average of $8.71 for every dollar spent." Estos resultados se logran con implementación correcta y adopción del equipo superior al 70%.</span></div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 15: CONCLUSIONES ===================== -->
+<div class="slide bg-dark" data-slide="15">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="slide-inner">
+        <div class="s-header fu">
+            <div class="s-tag s-tag-white">Módulo 6 · Integración</div>
+            <h2 class="s-title s-title-light">La Fórmula del <span class="hl2">Éxito</span></h2>
+            <p class="s-desc s-desc-light">Cuando el servicio humano y la tecnología trabajan juntos, la experiencia del cliente se transforma completamente.</p>
+        </div>
+
+        <div class="formula fu d1">
+            <div class="f-item">
+                <h4>🤝 Servicio<br>Cara a Cara</h4>
+                <div class="f-sub">6 Prestezas + Calidez Humana</div>
+            </div>
+            <div class="f-op">+</div>
+            <div class="f-item">
+                <h4>📊 Estrategias<br>de Servicio</h4>
+                <div class="f-sub">Métricas + Procesos + SWOT</div>
+            </div>
+            <div class="f-op">+</div>
+            <div class="f-item">
+                <h4>💻 CRM &<br>Tecnología</h4>
+                <div class="f-sub">Datos 360° + Automatización</div>
+            </div>
+            <div class="f-op" style="color:var(--g)">=</div>
+            <div class="f-result glow">
+                <h4>⭐ Experiencia<br>Excepcional</h4>
+                <div class="f-sub">Clientes fieles de por vida</div>
+            </div>
+        </div>
+
+        <div class="grid g2" style="grid-template-columns:1fr 1fr;">
+            <div class="card card-dark fu d3">
+                <div class="c-icon ci-dark">🔗</div>
+                <div class="c-title">Pilares de Integración</div>
+                <ol class="num-list">
+                    <li><strong>Humaniza</strong> la tecnología: los datos alimentan prestezas genuinas, no respuestas robóticas</li>
+                    <li><strong>Tecnifica</strong> el servicio humano: cada interacción se registra y analiza para mejorar</li>
+                    <li><strong>Personaliza</strong> cada interacción: usa el CRM para conocer al cliente antes de atenderlo</li>
+                    <li><strong>Mide</strong> constantemente: NPS, CSAT, CES trimestral y mejora continua</li>
+                    <li><strong>Agrega valor</strong> sistemáticamente: protocolos de sorpresa y deleite planificados</li>
+                </ol>
+            </div>
+            <div class="card card-dark fu d4">
+                <div class="c-icon ci-dark">✅</div>
+                <div class="c-title">Plan de Acción Inmediato</div>
+                <div class="timeline" style="margin:0">
+                    <div class="tl-item">
+                        <div class="tl-dot"></div>
+                        <div class="tl-title" style="color:var(--w)">Semana 1-2</div>
+                        <div class="tl-text">Capacita a tu equipo en las 6 prestezas con role-playing y evaluación</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot tl-dot-g"></div>
+                        <div class="tl-title" style="color:var(--w)">Semana 3-4</div>
+                        <div class="tl-text">Implementa métricas NPS y CSAT en todos los puntos de contacto</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot tl-dot-o"></div>
+                        <div class="tl-title" style="color:var(--w)">Mes 2</div>
+                        <div class="tl-text">Evalúa y selecciona herramienta CRM (prueba gratuita)</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot" style="background:var(--v);border-color:var(--v-light)"></div>
+                        <div class="tl-title" style="color:var(--w)">Mes 3</div>
+                        <div class="tl-text">Crea protocolos de valor agregado y primera revisión SWOT</div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot" style="background:var(--r);border-color:var(--r-light)"></div>
+                        <div class="tl-title" style="color:var(--w)">Trimestral</div>
+                        <div class="tl-text">Revisa KPIs, ajusta estrategia y capacitación continua</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SLIDE 16: CIERRE ===================== -->
+<div class="slide bg-dark" data-slide="16">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="deco-circle deco-3"></div>
+    <div class="slide-inner">
+        <div class="close-wrap">
+            <div class="close-icon fu">💬</div>
+            <h2 class="close-title fu d1">¿Preguntas?</h2>
+            <p class="close-sub fu d2">Gracias por su atención y compromiso con la excelencia en el servicio</p>
+
+            <div class="quote quote-blue fu d3" style="max-width:600px;margin:0 auto 30px;text-align:left">
+                <p>"Los clientes no recuerdan lo que les dijiste o vendiste. Recuerdan cómo los hiciste sentir."</p>
+                <div class="q-author">— Maya Angelou (adaptada al servicio)</div>
+            </div>
+
+            <div class="refs fu d4">
+                <h4>📚 Referencias Bibliográficas</h4>
+                <ul>
+                    <li>Kotler, P. & Keller, K. (2023). <em>Marketing Management</em>, 16th Ed. Pearson</li>
+                    <li>Harvard Business Review (2023). <em>The Science of Customer Experience</em></li>
+                    <li>Gallo, C. (2023). <em>The Communication Skills That Make or Break Leaders</em></li>
+                    <li>Gartner (2025). <em>Customer Service & Support Technology Trends</em></li>
+                    <li>Zendesk (2025). <em>Customer Experience Trends Report</em></li>
+                    <li>Nucleus Research (2024). <em>CRM Technology Value Matrix & ROI Study</em></li>
+                    <li>PwC (2023). <em>Future of Customer Experience Survey</em></li>
+                    <li>Bain & Company (2024). <em>The Economics of Loyalty</em></li>
+                    <li>McKinsey & Company (2024). <em>The Value of Customer Experience</em></li>
+                    <li>Accenture (2024). <em>Global Consumer Pulse Research</em></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<div class="nav">
+    <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>←</button>
+    <div class="dots" id="dots"></div>
+    <div class="counter"><span id="cur">1</span> <span>/ <span id="tot">16</span></span></div>
+    <button class="nav-btn" id="nextBtn" onclick="go(1)">→</button>
+</div>
+
+<script>
+let c=0;const s=document.querySelectorAll('.slide'),t=s.length,pb=document.getElementById('prog'),dc=document.getElementById('dots');
+for(let i=0;i<t;i++){const d=document.createElement('button');d.className='dot-btn'+(i===0?' active':'');d.onclick=()=>gt(i);dc.appendChild(d)}
+
+// Particles
+const pc=document.getElementById('particles');
+for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';const sz=Math.random()*4+2;p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s;background:${['#2563eb','#06b6d4','#10b981','#f59e0b','#8b5cf6'][Math.floor(Math.random()*5)]}`;pc.appendChild(p)}
+
+function up(){
+    s.forEach((sl,i)=>{sl.classList.remove('active','exit');if(i===c)sl.classList.add('active');else if(i<c)sl.classList.add('exit')});
+    document.getElementById('cur').textContent=c+1;
+    pb.style.width=((c+1)/t*100)+'%';
+    document.querySelectorAll('.dot-btn').forEach((d,i)=>d.classList.toggle('active',i===c));
+    document.getElementById('prevBtn').disabled=c===0;
+    document.getElementById('nextBtn').disabled=c===t-1;
+}
+function go(d){const n=c+d;if(n>=0&&n<t){c=n;up()}}
+function gt(i){c=i;up()}
+document.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','Enter'].includes(e.key)){e.preventDefault();go(1)}
+    else if(['ArrowLeft','Backspace'].includes(e.key)){e.preventDefault();go(-1)}
+    else if(e.key==='Home'){e.preventDefault();gt(0)}
+    else if(e.key==='End'){e.preventDefault();gt(t-1)}
+});
+let ts=0;
+document.addEventListener('touchstart',e=>ts=e.changedTouches[0].screenX);
+document.addEventListener('touchend',e=>{const d=ts-e.changedTouches[0].screenX;if(Math.abs(d)>50){d>0?go(1):go(-1)}});
+let wt;document.addEventListener('wheel',e=>{clearTimeout(wt);wt=setTimeout(()=>{e.deltaY>0?go(1):go(-1)},120)});
+document.getElementById('tot').textContent=t;up();
+</script>
+
+</body>
+</html>
